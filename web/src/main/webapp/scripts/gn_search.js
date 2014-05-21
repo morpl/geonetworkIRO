@@ -1129,20 +1129,22 @@ function metadataselect(id, selected){
 	};
 }
 
-function toggleMoreFields() {
-  $("all_search_row").toggle();
-  $("phrase_search_row").toggle();
-  $("without_search_row").toggle();
+function toggleMoreFields(pnl) {
+  if (pnl == undefined) pnl = '';
 
-  var src = $("i_morefields").getAttribute('src');
+  $("all_search_row" + pnl).toggle();
+  $("phrase_search_row" + pnl).toggle();
+  $("without_search_row" + pnl).toggle();
+
+  var src = $("i_morefields" + pnl).getAttribute('src');
   var ndx = src.lastIndexOf('/');
 
   src = src.substring(0, ndx+1);
 
-  if ($("all_search_row").visible() == true) {
-	$("i_morefields").setAttribute('src', src +'minus.png');
+  if ($("all_search_row" + pnl).visible() == true) {
+	$("i_morefields" + pnl).setAttribute('src', src +'minus.png');
   } else {
-	$("i_morefields").setAttribute('src', src +'plus.gif');
+	$("i_morefields" + pnl).setAttribute('src', src +'plus.gif');
   }
 }
 
@@ -1175,6 +1177,7 @@ function toggleWhen() {
 	$("i_when").setAttribute('src', src +'plus.gif');
   }
 }
+
 
 function addWMSLayer(layers) {
 	Ext.getCmp("north-map-panel").expand();
@@ -1346,4 +1349,165 @@ function inspireSourceTypeChanged(sourceType) {
         $("classificationDataServiceLabel").className = "labelField";
     }
 }
+
+/******************************/
+/* Geodata code               */
+/******************************/
+
+function toggleSearchSection(name) {
+  $(name + "searchfields").toggle();
+
+  var src = $("i_"+name).getAttribute('src');
+  var ndx = src.lastIndexOf('/');
+
+  src = src.substring(0, ndx+1);
+
+  if ($(name + "searchfields").visible() == true) {
+    $("i_"+name).setAttribute('src', src +'minus.png');
+  } else {
+    $("i_"+name).setAttribute('src', src +'plus.gif');
+  }
+}
+
+/*
+  Search method for the Geodata search panel
+ */
+function runAdvancedGeoDataSearch(type){
+  if (type != "pdf")
+    preparePresent();
+
+  setSort();
+
+  // Metadata type filter
+  var metadataTypeValues = [];
+
+  if (!$("metadataType_all").checked) {
+    var metadataTypes = ["dataset", "service", "iro"];
+
+    for (var i =0; i < metadataTypes.length; i++) {
+      var elName = $("metadataType_" + metadataTypes[i]);
+      if (elName.checked && !elName.disabled) {
+        metadataTypeValues.push(elName.value);
+      }
+    }
+  }
+
+  $("geodata_type").value = metadataTypeValues.join(" or ");
+
+  var pars = $('advanced_geodata_search_form').serialize(true);
+
+  // Rename date field names for the query
+  pars.dateFrom = pars.dateFromGeodata;
+  delete pars.dateFromGeodata;
+  pars.dateTo = pars.dateToGeodata;
+  delete pars.dateToGeodata;
+
+  pars.extFrom = pars.extFromGeodata;
+  delete pars.extFromGeodata;
+  pars.extTo = pars.extFromGeodata;
+  delete pars.extFromGeodata;
+
+  if (type == "pdf")
+    gn_searchpdf(pars);
+  else
+  // Load results via AJAX
+    gn_search(pars);
+}
+
+function resetAdvancedGeoDataSearch() {
+  var form = $('advanced_geodata_search_form');
+
+  // Clear all form values
+  clearFormValues(form);
+
+  setBoolParam(form['radfrom0_geodata'],true);
+  form['radfromiro1_geodata'].disable();
+  form['radfromext1_geodata'].disable();
+
+  setParam(form['requestedLanguage'],      Env.lang);
+  setParam(form['sortBy'],      'relevance');
+  setParam(form['hitsPerPage'], '10');
+  setParam(form['output'],      'full');
+
+  // reset the selectors so that new searches are done to fill them
+  selectorIds = [];
+}
+
+
+/*
+  When "All metadata" is checked, checks all the metadata type checkboxes
+ */
+function metadataType_updateUI_All(checked) {
+  if (checked) {
+    $("metadataType_dataset").checked = checked;
+    $("metadataType_service").checked = checked;
+    $("metadataType_iro").checked = checked;
+
+  }
+}
+
+/*
+ When a metadata type checkbox is unchecked, the "All metadata" checkbox is unchecked.
+ If all are checked "All metadata" checkbox  is checked.
+ */
+function metadataType_updateUI() {
+  var metadataTypes = ["dataset", "service", "iro"];
+  var check = true;
+
+  for (var i =0; i < metadataTypes.length; i++) {
+    var elName = $("metadataType_" + metadataTypes[i]);
+    if (!elName.checked) {
+      check = false;
+      break;
+    }
+  }
+  $("metadataType_all").checked = check;
+}
+
+
+function updateDateFilter(panel) {
+  if (panel == 'radfrom1_geodata') {
+    $('radfrom1_geodata').checked=true;
+    $('radfrom1_geodata').disabled='';
+    $('radfromiro1_geodata').disabled='disabled';
+    $('radfromext1_geodata').disabled='disabled';
+
+  } else if (panel == 'radfromiro1_geodata') {
+    $('radfromiro1_geodata').checked=true;
+    $('radfromiro1_geodata').disabled='';
+    $('radfrom1_geodata').disabled='disabled';
+    $('radfromext1_geodata').disabled='disabled';
+
+  } else if (panel == 'radfromext1_geodata') {
+    $('radfromext1_geodata').checked=true;
+    $('radfromext1_geodata').disabled='';
+    $('radfromiro1_geodata').disabled='disabled';
+    $('radfrom1_geodata').disabled='disabled';
+  }
+
+}
+
+function setDatesGeodata(what)
+{
+  var xfrom = $('dateFromGeodata');
+  var xto = $('dateToGeodata');
+
+  var extfrom = $('extFromGeodata');
+  var extto = $('extToGeodata');
+
+  var irofrom = $('iroFrom');
+  var iroto = $('iroTo');
+
+  if (what==0) //anytime
+  {
+    xfrom.value = "";
+    xto.value = "";
+    extfrom.value = "";
+    extto.value = "";
+    irofrom.value="";
+    iroto.value="";
+    return;
+  }
+}
+
 /*** EOF ***********************************************************/

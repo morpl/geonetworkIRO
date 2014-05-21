@@ -39,10 +39,19 @@
 
         <!-- ========================================================================================= -->
 
+  <xsl:variable name="isoLangId">
+    <xsl:call-template name="langId19139"/>
+  </xsl:variable>
+
+  <xsl:variable name="_defaultTitle">
+    <xsl:call-template name="defaultTitle">
+      <xsl:with-param name="isoDocLangId" select="$isoLangId"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:variable name="isIROMetadata" select="starts-with($_defaultTitle, 'IRO_')" />
+
 	<xsl:template match="/">
-	    <xsl:variable name="isoLangId">
-	  	    <xsl:call-template name="langId19139"/>
-        </xsl:variable>
 
 		<Document locale="{$isoLangId}">
 			<Field name="_locale" string="{$isoLangId}" store="true" index="true"/>
@@ -50,11 +59,7 @@
 			<Field name="_docLocale" string="{$isoLangId}" store="true" index="true"/>
 
 			
-			<xsl:variable name="_defaultTitle">
-				<xsl:call-template name="defaultTitle">
-					<xsl:with-param name="isoDocLangId" select="$isoLangId"/>
-				</xsl:call-template>
-			</xsl:variable>
+
 			<Field name="_defaultTitle" string="{string($_defaultTitle)}" store="true" index="true"/>
 			<!-- not tokenized title for sorting, needed for multilingual sorting -->
             <Field name="_title" string="{string($_defaultTitle)}" store="true" index="true" />
@@ -585,15 +590,23 @@
 
 		<xsl:choose>
 			<!-- Check if metadata is a service metadata record -->
+      <xsl:when test="$isIROMetadata = true()">
+        <Field name="geodata_type" string="iro" store="true" index="true"/>
+      </xsl:when>
 			<xsl:when test="gmd:identificationInfo/srv:SV_ServiceIdentification">
 				<Field name="type" string="service" store="false" index="true"/>
-			</xsl:when>
+        <Field name="geodata_type" string="service" store="true" index="true"/>
+      </xsl:when>
+      <xsl:when test="$isDataset">
+        <Field name="geodata_type" string="dataset" store="true" index="true"/>
+      </xsl:when>
 	     <!-- <xsl:otherwise>
 	      ... gmd:*_DataIdentification / hierachicalLevel is used and return dataset, serie, ... 
 	      </xsl:otherwise>-->
-	    </xsl:choose>
+	  </xsl:choose>
 
-		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 		<xsl:for-each select="gmd:hierarchyLevelName/gco:CharacterString">
 			<Field name="levelName" string="{string(.)}" store="false" index="true"/>
@@ -656,6 +669,7 @@
 				<Field name="crsVersion" string="{string(gmd:version/gco:CharacterString)}" store="false" index="true"/>
 			</xsl:for-each>
 		</xsl:for-each>
+
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
 		<!-- === Free text search === -->		

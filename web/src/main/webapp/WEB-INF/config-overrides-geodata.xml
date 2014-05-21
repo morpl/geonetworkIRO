@@ -1,0 +1,11 @@
+<overrides xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="config-overrides.xsd">
+  <!-- an import can be used if many of the overrides are common between your different configurations -->
+  <import file="/WEB-INF/config-overrides-geodata-props.xml" />
+
+
+  <file name=".*/WEB-INF/config.xml">
+    <replaceAtt xpath="services/service[@name='main.home']/output" attName="sheet" value="geodata/main-page.xsl" />
+  </file>
+
+</overrides>
