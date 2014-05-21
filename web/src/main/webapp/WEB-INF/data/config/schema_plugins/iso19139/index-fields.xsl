@@ -143,6 +143,9 @@
 					<xsl:if test="$useDateAsTemporalExtent">
 						<Field name="tempExtentBegin" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
 					</xsl:if>
+          <xsl:if test="$isIROMetadata">
+            <Field name="iroDateFrom" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
+          </xsl:if>
 				</xsl:for-each>
 
 				<xsl:for-each select="gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue='creation']/gmd:date">
@@ -152,6 +155,9 @@
 					<xsl:if test="$useDateAsTemporalExtent">
 						<Field name="tempExtentBegin" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
 					</xsl:if>
+          <xsl:if test="$isIROMetadata">
+            <Field name="iroFrom" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
+          </xsl:if>
 				</xsl:for-each>
 
 				<xsl:for-each select="gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue='publication']/gmd:date">
@@ -159,6 +165,9 @@
 					<xsl:if test="$useDateAsTemporalExtent">
 						<Field name="tempExtentBegin" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
 					</xsl:if>
+          <xsl:if test="$isIROMetadata">
+            <Field name="iroFrom" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
+          </xsl:if>
 				</xsl:for-each>
 
 				<!-- fields used to search for metadata in paper or digital format -->
@@ -669,6 +678,15 @@
 				<Field name="crsVersion" string="{string(gmd:version/gco:CharacterString)}" store="false" index="true"/>
 			</xsl:for-each>
 		</xsl:for-each>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- === Metadata Maintenance === -->
+
+    <xsl:if test="$isIROMetadata = true()">
+    <xsl:for-each select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate">
+      <Field name="iroDateTo" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
+    </xsl:for-each>
+    </xsl:if>
 
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		

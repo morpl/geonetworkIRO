@@ -93,6 +93,10 @@ public class LuceneQueryBuilder {
      */
     private boolean temporalCriteriaAdded;
     /**
+     * Only one temporal search criteria could be added.
+     */
+    private boolean temporalCriteriaAddedIro;
+    /**
      * Template = "n" is added if not set in search criteria.
      */
     private boolean templateCriteriaAdded;
@@ -421,6 +425,12 @@ public class LuceneQueryBuilder {
             else if ("phrase".equals(fieldName)) {
                 phraseCriteria(fieldValue, query, qOccur);
             }
+            // temporal IRO
+            else if (SearchParameter.IRO_DATEFROM.equals(fieldName) || SearchParameter.IRO_DATETO.equals(fieldName)) {
+                if (!temporalCriteriaAddedIro) {
+                    temporalCriteriaAddedIro = temporalCriteriaIro(searchCriteria, query);
+                }
+            }
             // temporal
             else if (SearchParameter.EXTFROM.equals(fieldName) || SearchParameter.EXTTO.equals(fieldName)) {
                 if (!temporalCriteriaAdded) {
@@ -608,6 +618,60 @@ public class LuceneQueryBuilder {
                 tempQuery.add(temporalRangeQueryClause);
 
                 temporalRangeQuery = TermRangeQuery.newStringRange(LuceneIndexField.TEMPORALEXTENT_BEGIN, null, extFrom, true, true);
+                temporalRangeQueryClause = new BooleanClause(temporalRangeQuery, temporalExtentOccur);
+                tempQuery.add(temporalRangeQueryClause);
+
+                temporalExtentQuery.add(tempQuery, temporalRangeQueryOccur);
+            }
+
+            if (temporalExtentQuery.clauses().size() > 0) {
+                temporalRangeQueryClause = new BooleanClause(temporalExtentQuery, temporalExtentOccur);
+                query.add(temporalRangeQueryClause);
+            }
+        }
+        return true;
+    }
+
+
+    private boolean temporalCriteriaIro(Map<String, Set<String>> searchCriteria, BooleanQuery query) {
+        //
+        // Temporal extent : finds records where temporal extent overlaps the search extent
+        //
+        Set<String> from = searchCriteria.get(SearchParameter.IRO_DATEFROM);
+        Set<String> to = searchCriteria.get(SearchParameter.IRO_DATETO);
+
+        String extTo = to != null ? (String) to.toArray()[0] : null;
+        String extFrom = from != null ? (String) from.toArray()[0] : null;
+
+        if (StringUtils.isNotBlank(extTo) || StringUtils.isNotBlank(extFrom)) {
+            BooleanQuery temporalExtentQuery = new BooleanQuery();
+            BooleanClause.Occur temporalExtentOccur = LuceneUtils.convertRequiredAndProhibitedToOccur(true, false);
+            BooleanClause.Occur temporalRangeQueryOccur = LuceneUtils.convertRequiredAndProhibitedToOccur(false, false);
+
+            TermRangeQuery temporalRangeQuery;
+
+            // temporal extent start is within search extent
+            temporalRangeQuery = TermRangeQuery.newStringRange(LuceneIndexField.IRO_DATEFROM, extFrom, extTo, true, true);
+            BooleanClause temporalRangeQueryClause = new BooleanClause(temporalRangeQuery, temporalRangeQueryOccur);
+
+            temporalExtentQuery.add(temporalRangeQueryClause);
+
+            // or temporal extent end is within search extent
+            temporalRangeQuery = TermRangeQuery.newStringRange(LuceneIndexField.IRO_DATETO, extFrom, extTo, true, true);
+            temporalRangeQueryClause = new BooleanClause(temporalRangeQuery, temporalRangeQueryOccur);
+
+            temporalExtentQuery.add(temporalRangeQueryClause);
+
+            // or temporal extent contains search extent
+            if (StringUtils.isNotBlank(extTo) && StringUtils.isNotBlank(extFrom)) {
+                BooleanQuery tempQuery = new BooleanQuery();
+
+                temporalRangeQuery = TermRangeQuery.newStringRange(LuceneIndexField.IRO_DATEFROM, extTo, null, true, true);
+                temporalRangeQueryClause = new BooleanClause(temporalRangeQuery, temporalExtentOccur);
+
+                tempQuery.add(temporalRangeQueryClause);
+
+                temporalRangeQuery = TermRangeQuery.newStringRange(LuceneIndexField.IRO_DATETO, null, extFrom, true, true);
                 temporalRangeQueryClause = new BooleanClause(temporalRangeQuery, temporalExtentOccur);
                 tempQuery.add(temporalRangeQueryClause);
 

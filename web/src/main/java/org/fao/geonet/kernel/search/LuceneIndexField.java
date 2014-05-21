@@ -80,4 +80,7 @@ public class LuceneIndexField {
 	public static final String VALID = "_valid";
 	public static final String WEST = "westBL";
 
+    public static final String IRO_DATE = "iroDate";
+    public static final String IRO_DATEFROM = "iroDateFrom";
+    public static final String IRO_DATETO = "iroDateTo";
 }
