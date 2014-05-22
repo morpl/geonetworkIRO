@@ -188,7 +188,7 @@
 								contentEl: 'advanced_search_pnl'
 							}
               ,{
-              itemId: 'advanced_geodata',
+              itemId: 'geodata',
               bodyStyle: 'padding:15px',
               autoScroll: true,
               title: '<xsl:value-of select="/root/gui/strings/advancedSearch"/> - Geodata',
@@ -309,19 +309,33 @@
 					// Init of advanced tab, otherwise when selected doesn't show "When" fields as not initialized
 					initAdvancedSearch();
 
+          // Init of geodata advanced tab
+          initAdvancedSearchGeodata();
+
 				} else if (requestTab == 'advanced') {
 					searchTabs.setActiveTab(requestTab);
 					showAdvancedSearch(search);
+
+          // Init of geodata advanced tab
+          initAdvancedSearchGeodata();
+
 				} else if (requestTab == 'remote') {
 					searchTabs.setActiveTab(requestTab);
 					showRemoteSearch(search);
 
 					//  Init of advanced tab, otherwise when selected doesn't show "When" fields as not initialized
-						initAdvancedSearch();
+          initAdvancedSearch();
+
+          // Init of geodata advanced tab
+          initAdvancedSearchGeodata();
 
 				} else if (currentSearch == 'advanced') {
 					searchTabs.setActiveTab(currentSearch);
 					showAdvancedSearch(search);
+
+          // Init of geodata advanced tab
+          initAdvancedSearchGeodata();
+
 				} else if (currentSearch == 'remote') {
 					searchTabs.setActiveTab(currentSearch);
 					showRemoteSearch(search);
@@ -329,12 +343,25 @@
 					// Init of advanced tab, otherwise when selected doesn't show "When" fields as not initialized
 					initAdvancedSearch();
 
-				} else {
+          // Init of geodata advanced tab
+          initAdvancedSearchGeodata();
+
+        } else if (currentSearch == 'geodata') {
+          searchTabs.setActiveTab(currentSearch);
+          showAdvancedSearchGeodata(search);
+
+          // Init of advanced tab, otherwise when selected doesn't show "When" fields as not initialized
+          initAdvancedSearch();
+
+      } else {
 					searchTabs.setActiveTab('default');
 					showSimpleSearch(search);
 
 					// Init of advanced tab, otherwise when selected doesn't show "When" fields as not initialized
 					initAdvancedSearch();
+
+          // Init of geodata advanced tab
+          initAdvancedSearchGeodata();
 				}
 				<!-- If a UUID is passed, it will be opened within the AJAX page -->
 				var uuid="<xsl:value-of select="$uuid"/>";

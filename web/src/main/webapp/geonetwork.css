@@ -803,9 +803,10 @@ td.advsearchfields {
 	margin: 3px;
 }
 
-#dateFrom, #dateTo, #extTo, #extFrom {
+/* Managed in .cal style */
+/*#dateFrom, #dateTo, #extTo, #extFrom {
 	margin: 3px;
-}
+}*/
 
 #digital, #download, #dynamic, #paper {
 	margin: 3px;
@@ -1427,6 +1428,6 @@ div#editPanel * div table tr > td {
 }
 
 /** Geodata styles **/
-#dateFromGeodata, #dateToGeodata, #extToGeodata, #extFromGeodata, #iroDateFrom, #iroDateTo {
+.cal {
     margin: 3px;
 }

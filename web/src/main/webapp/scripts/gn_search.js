@@ -1354,6 +1354,24 @@ function inspireSourceTypeChanged(sourceType) {
 /* Geodata code               */
 /******************************/
 
+function showAdvancedSearchGeodata(search) {
+  openSearch('advanced_geodata_search_pnl');
+  var GNCookie = Ext.state.Manager.getProvider();
+  GNCookie.set('search', {searchTab: 'geodata'});
+  initAdvancedSearchGeodata();
+  if (search == 'true') {
+    runAdvancedGeoDataSearch();
+  } else {
+    setFormWithQueryParams('advanced_geodata_search_form');
+  }
+}
+
+function initAdvancedSearchGeodata()
+{
+  updateContactsGeodata();
+  metadataType_updateUI();
+}
+
 function toggleSearchSection(name) {
   $(name + "searchfields").toggle();
 
@@ -1394,18 +1412,65 @@ function runAdvancedGeoDataSearch(type){
 
   $("geodata_type").value = metadataTypeValues.join(" or ");
 
+  //$("organisationRole").value = $("contact-role").value + "|" + $("organisation").value;
+  $("organisationRole").value = $("organisation").value;
+
   var pars = $('advanced_geodata_search_form').serialize(true);
 
-  // Rename date field names for the query
-  pars.dateFrom = pars.dateFromGeodata;
-  delete pars.dateFromGeodata;
-  pars.dateTo = pars.dateToGeodata;
-  delete pars.dateToGeodata;
+  var dateParamNames = ["dateFromGeodata", "dateToGeodata",
+    "extFromGeodata", "extToGeodata",
+    "iroDateFrom", "iroDateTo",
+    "dateMdFromGeodata", "dateMdToGeodata"];
 
-  pars.extFrom = pars.extFromGeodata;
-  delete pars.extFromGeodata;
-  pars.extTo = pars.extFromGeodata;
-  delete pars.extFromGeodata;
+  var dateParamsToPreserve;
+
+  // Change dates filter
+  if ($("radfrom1_geodata").checked) {
+    dateParamsToPreserve = ["dateFrom", "dateTo"];
+
+    // Rename date field names for the query
+    pars.dateFrom = pars.dateFromGeodata;
+    delete pars.dateFromGeodata;
+    pars.dateTo = pars.dateToGeodata;
+    delete pars.dateToGeodata;
+
+  // Metadata dates filter
+  } else if ($("radfrommd1_geodata").checked) {
+    var dateType = $('dateType').value;
+    dateParamsToPreserve = [dateType + 'DateFrom', dateType + 'DateTo'];
+
+    // Rename date field names for the query
+    pars[dateType + 'DateFrom'] = pars.dateMdFromGeodata;
+    delete pars.dateMdFromGeodata;
+    pars[dateType + 'DateTo'] = pars.dateMdToGeodata;
+    delete pars.dateMdToGeodata;
+
+  // IRO dates filter
+  } else if ($("radfromiro1_geodata").checked) {
+    // IRO date filter: remove the other date filters (change date, temporal extent) from the parameters to send
+    dateParamsToPreserve = ["iroDateFrom", "iroDateTo"];
+
+  // Temporal extent filter
+  } else if ($("radfromext1_geodata").checked) {
+    dateParamsToPreserve = ["extFrom", "extTo"];
+
+    // Rename date field names for the query
+    pars.extFrom = pars.extFromGeodata;
+    delete pars.extFromGeodata;
+    pars.extTo = pars.extToGeodata;
+    delete pars.extToGeodata;
+  }
+
+
+  // Remove not required date filters
+  for (var i = 0; i < dateParamNames.length; i++) {
+    var param = dateParamNames[i];
+
+    if ((param.substring(0, dateParamsToPreserve[0].length) != dateParamsToPreserve[0]) &&
+      (param.substring(0, dateParamsToPreserve[1].length) != dateParamsToPreserve[1])) {
+      delete pars[param];
+    }
+  }
 
   if (type == "pdf")
     gn_searchpdf(pars);
@@ -1435,79 +1500,129 @@ function resetAdvancedGeoDataSearch() {
 
 
 /*
-  When "All metadata" is checked, checks all the metadata type checkboxes
+ When a metadata type checkbox is unchecked, the "All metadata" checkbox is unchecked.
+ If all are checked "All metadata" checkbox  is checked.
  */
-function metadataType_updateUI_All(checked) {
-  if (checked) {
-    $("metadataType_dataset").checked = checked;
-    $("metadataType_service").checked = checked;
-    $("metadataType_iro").checked = checked;
+function metadataType_updateUI(ctrl) {
 
+  if ((ctrl != undefined) && (ctrl.id == 'metadataType_all')) {
+    // If checked metadataType_all, select all the other controls
+    if (ctrl.checked) {
+      $("metadataType_dataset").checked = true;
+      $("metadataType_service").checked = true;
+      $("metadataType_iro").checked = true;
+
+    }
+  } else {
+    var metadataTypes = ["dataset", "service", "iro"];
+    var check = true;
+
+    // Check if all selected, the select also metadataType_all
+    for (var i =0; i < metadataTypes.length; i++) {
+      var elName = $("metadataType_" + metadataTypes[i]);
+      if (!elName.checked) {
+        check = false;
+        break;
+      }
+    }
+    $("metadataType_all").checked = check;
+
+}
+
+  // If filter on iro is selected OR no filter selected, display contact and when sections
+  if ( $("metadataType_iro").checked ||
+    ($("metadataType_dataset").checked == false && $("metadataType_service").checked == false))  {
+    $("contact_container").show();
+    $("whengeodata_container").show();
+
+  } else {
+    $("contact_container").hide();
+    $("whengeodata_container").hide();
+  }
+}
+
+
+/*
+Sets selected the radio button for the panel corresponding to the date field that has been selected.
+The radio buttons for the other date panels are disabled.
+ */
+function updateDateFilterPanels(panel) {
+
+  var datePanelsIds = ["radfrom1_geodata", "radfrommd1_geodata",
+    "radfromiro1_geodata", "radfromext1_geodata"];
+
+  for (var i = 0; i < datePanelsIds.length; i++) {
+    var currentPanel = datePanelsIds[i];
+
+    if (currentPanel == panel) {
+      $(currentPanel).checked=true;
+      $(currentPanel).disabled='';
+    } else {
+      $(currentPanel).disabled='disabled';
+    }
   }
 }
 
 /*
- When a metadata type checkbox is unchecked, the "All metadata" checkbox is unchecked.
- If all are checked "All metadata" checkbox  is checked.
+  If select Anytime, removes the dates from the date controls.
  */
-function metadataType_updateUI() {
-  var metadataTypes = ["dataset", "service", "iro"];
-  var check = true;
-
-  for (var i =0; i < metadataTypes.length; i++) {
-    var elName = $("metadataType_" + metadataTypes[i]);
-    if (!elName.checked) {
-      check = false;
-      break;
-    }
-  }
-  $("metadataType_all").checked = check;
-}
-
-
-function updateDateFilter(panel) {
-  if (panel == 'radfrom1_geodata') {
-    $('radfrom1_geodata').checked=true;
-    $('radfrom1_geodata').disabled='';
-    $('radfromiro1_geodata').disabled='disabled';
-    $('radfromext1_geodata').disabled='disabled';
-
-  } else if (panel == 'radfromiro1_geodata') {
-    $('radfromiro1_geodata').checked=true;
-    $('radfromiro1_geodata').disabled='';
-    $('radfrom1_geodata').disabled='disabled';
-    $('radfromext1_geodata').disabled='disabled';
-
-  } else if (panel == 'radfromext1_geodata') {
-    $('radfromext1_geodata').checked=true;
-    $('radfromext1_geodata').disabled='';
-    $('radfromiro1_geodata').disabled='disabled';
-    $('radfrom1_geodata').disabled='disabled';
-  }
-
-}
-
 function setDatesGeodata(what)
 {
-  var xfrom = $('dateFromGeodata');
-  var xto = $('dateToGeodata');
-
-  var extfrom = $('extFromGeodata');
-  var extto = $('extToGeodata');
-
-  var irofrom = $('iroFrom');
-  var iroto = $('iroTo');
-
   if (what==0) //anytime
   {
-    xfrom.value = "";
-    xto.value = "";
-    extfrom.value = "";
-    extto.value = "";
-    irofrom.value="";
-    iroto.value="";
+    var dateCtrlIds = ["dateFromGeodata", "dateToGeodata",
+      "dateMdFromGeodata", "dateMdToGeodata",
+      "extFromGeodata", "extToGeodata",
+      "iroDateFrom", "iroDateTo"];
+
+    for (var i = 0; i < dateCtrlIds.length; i++) {
+      var currentDateCtrl = dateCtrlIds[i];
+
+      $(currentDateCtrl).value = "";
+    }
+
     return;
   }
 }
 
+
+/*
+  Updates the contacts list based on the selected role.
+ */
+function updateContactsGeodata() {
+  /*var pars;
+  if ($('contact-role').value) {
+    pars = "field=organisationRole&q="+$('contact-role').value+"|"+$('organisationRole').value;
+
+  } else {
+    pars = "field=organisationRole&q="+$('organisationRole').value;
+
+  }*/
+
+  /*var pars = "field=";
+  if ($('contact-role').value) {
+    pars += "organisation_" + $('contact-role').value  + "&q=" + $('contact-role').value + "|";
+  } else {
+    pars += "organisation&q=";
+  }*/
+
+  var pars = "field=organisationRole&q="+$('contact-role').value+"|"
+
+  var myAjax = new Ajax.Request(
+    getGNServiceURL('main.search.suggest.ui'),
+    {
+      method: 'get',
+      parameters: pars,
+      onSuccess: function(req) {
+        //Response received
+        $('organisation').innerHTML = req.responseText;
+
+      },
+      onFailure: function() {
+        // TODO
+        alert("error");
+      }
+    }
+  );
+}
 /*** EOF ***********************************************************/
