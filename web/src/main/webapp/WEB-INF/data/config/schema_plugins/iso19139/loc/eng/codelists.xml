@@ -264,6 +264,31 @@
 			<label>Partner</label>
 			<description></description>
 		</entry>-->
+
+    <!-- NST IRO ROLES -->
+    <entry>
+      <code>primaryResponsibility</code>
+      <label>Primary responsibility (NST IRO)</label>
+      <description>Party who have the primary responsibility (NST IRO)</description>
+    </entry>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <entry>
+      <code>partlyResponsibility</code>
+      <label>Partly responsibility (NST IRO)</label>
+      <description>Party who have the partly responsibility (NST IRO)</description>
+    </entry>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <entry>
+      <code>outsourcedResponsibility</code>
+      <label>Outsourced responsibility (NST IRO)</label>
+      <description>Party who have the outsourced responsibility (NST IRO)</description>
+    </entry>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <entry>
+      <code>reportingRecipient</code>
+      <label>Reporting recipient (NST IRO)</label>
+      <description>Party who is the reporting recipient (NST IRO)</description>
+    </entry>
 	</codelist>
 	<!-- ==================================================== -->
 	<codelist name="gmd:DQ_EvaluationMethodTypeCode">
