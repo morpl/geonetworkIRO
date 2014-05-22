@@ -184,7 +184,9 @@ public class UserQueryInput {
             SearchParameter.DENOMINATORTO,
             SearchParameter.DENOMINATOR,
             SearchParameter.CREATIONDATEFROM, 
-            SearchParameter.CREATIONDATETO);
+            SearchParameter.CREATIONDATETO,
+            SearchParameter.IRO_DATEFROM,
+            SearchParameter.IRO_DATETO);
 
     /**
      * TODO : use enum instead ? 
@@ -194,19 +196,22 @@ public class UserQueryInput {
             LuceneIndexField.REVISION_DATE,
             LuceneIndexField.PUBLICATION_DATE, 
             LuceneIndexField.CREATE_DATE,
-            LuceneIndexField.DENOMINATOR);
+            LuceneIndexField.DENOMINATOR,
+            LuceneIndexField.IRO_DATE);
     private static final List<String> RANGE_FIELDS_FROM = Arrays.asList(
             SearchParameter.DATEFROM, 
             SearchParameter.REVISIONDATEFROM,
             SearchParameter.PUBLICATIONDATEFROM,
             SearchParameter.CREATIONDATEFROM, 
-            SearchParameter.DENOMINATORFROM);
+            SearchParameter.DENOMINATORFROM,
+            SearchParameter.IRO_DATEFROM);
     private static final List<String> RANGE_FIELDS_TO = Arrays.asList(
             SearchParameter.DATETO, 
             SearchParameter.REVISIONDATETO,
             SearchParameter.PUBLICATIONDATETO, 
             SearchParameter.CREATIONDATETO,
-            SearchParameter.DENOMINATORTO);
+            SearchParameter.DENOMINATORTO,
+            SearchParameter.IRO_DATETO);
 
     /**
      * Return Lucene field name according to search parameter name.

@@ -425,12 +425,6 @@ public class LuceneQueryBuilder {
             else if ("phrase".equals(fieldName)) {
                 phraseCriteria(fieldValue, query, qOccur);
             }
-            // temporal IRO
-            else if (SearchParameter.IRO_DATEFROM.equals(fieldName) || SearchParameter.IRO_DATETO.equals(fieldName)) {
-                if (!temporalCriteriaAddedIro) {
-                    temporalCriteriaAddedIro = temporalCriteriaIro(searchCriteria, query);
-                }
-            }
             // temporal
             else if (SearchParameter.EXTFROM.equals(fieldName) || SearchParameter.EXTTO.equals(fieldName)) {
                 if (!temporalCriteriaAdded) {

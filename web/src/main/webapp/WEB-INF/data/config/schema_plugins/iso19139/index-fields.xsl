@@ -143,9 +143,6 @@
 					<xsl:if test="$useDateAsTemporalExtent">
 						<Field name="tempExtentBegin" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
 					</xsl:if>
-          <xsl:if test="$isIROMetadata">
-            <Field name="iroDateFrom" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
-          </xsl:if>
 				</xsl:for-each>
 
 				<xsl:for-each select="gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue='creation']/gmd:date">
@@ -155,9 +152,6 @@
 					<xsl:if test="$useDateAsTemporalExtent">
 						<Field name="tempExtentBegin" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
 					</xsl:if>
-          <xsl:if test="$isIROMetadata">
-            <Field name="iroFrom" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
-          </xsl:if>
 				</xsl:for-each>
 
 				<xsl:for-each select="gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue='publication']/gmd:date">
@@ -165,9 +159,6 @@
 					<xsl:if test="$useDateAsTemporalExtent">
 						<Field name="tempExtentBegin" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
 					</xsl:if>
-          <xsl:if test="$isIROMetadata">
-            <Field name="iroFrom" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
-          </xsl:if>
 				</xsl:for-each>
 
 				<!-- fields used to search for metadata in paper or digital format -->
@@ -272,7 +263,7 @@
 				<xsl:variable name="logo" select="../..//gmx:FileName/@src"/>
 			
 				<Field name="responsibleParty" string="{concat($role, '|resource|', ., '|', $logo, '|', $email)}" store="true" index="false"/>
-				
+
 			</xsl:for-each>
 
 			<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
@@ -655,7 +646,7 @@
 			<xsl:variable name="role" select="../../gmd:role/*/@codeListValue"/>
 			<xsl:variable name="logo" select="../..//gmx:FileName/@src"/>
 			
-			<Field name="responsibleParty" string="{concat($role, '|metadata|', ., '|', $logo)}" store="true" index="false"/>			
+			<Field name="responsibleParty" string="{concat($role, '|metadata|', ., '|', $logo)}" store="true" index="false"/>
 		</xsl:for-each>
 
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
@@ -684,7 +675,7 @@
 
     <xsl:if test="$isIROMetadata = true()">
     <xsl:for-each select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate">
-      <Field name="iroDateTo" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
+      <Field name="iroDate" string="{string(gco:Date[.!='']|gco:DateTime[.!=''])}" store="true" index="true"/>
     </xsl:for-each>
     </xsl:if>
 
