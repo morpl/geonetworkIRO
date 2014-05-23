@@ -32,7 +32,8 @@ function runCsvSearch() {
     if ($("advanced_search_pnl").visible()) {
         serviceUrl = serviceUrl + "?" + fetchParam('template');
 	}
-    window.open(serviceUrl, 'csv')
+    //window.open(serviceUrl, 'csv')
+    location.replace (serviceUrl);
     metadataselect(0, 'remove-all');
 }
 
@@ -1463,12 +1464,14 @@ function runAdvancedGeoDataSearch(type){
 
 
   // Remove not required date filters
-  for (var i = 0; i < dateParamNames.length; i++) {
-    var param = dateParamNames[i];
+  if (dateParamsToPreserve != undefined) {
+    for (var i = 0; i < dateParamNames.length; i++) {
+      var param = dateParamNames[i];
 
-    if ((param.substring(0, dateParamsToPreserve[0].length) != dateParamsToPreserve[0]) &&
-      (param.substring(0, dateParamsToPreserve[1].length) != dateParamsToPreserve[1])) {
-      delete pars[param];
+      if ((param.substring(0, dateParamsToPreserve[0].length) != dateParamsToPreserve[0]) &&
+        (param.substring(0, dateParamsToPreserve[1].length) != dateParamsToPreserve[1])) {
+        delete pars[param];
+      }
     }
   }
 

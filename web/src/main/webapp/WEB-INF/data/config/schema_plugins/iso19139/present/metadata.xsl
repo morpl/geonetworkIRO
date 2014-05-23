@@ -4372,4 +4372,44 @@
 
 	<xsl:template name="iso19139-javascript"/>
 
+
+  <xsl:template match="gmd:MD_Metadata" mode="csv">
+    <xsl:param name="internalSep"/>
+
+    <metadata>
+      <xsl:copy-of select="geonet:info"/>
+
+      <!-- Title -->
+      <Title><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString|gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/></Title>
+      <xsl:choose>
+        <xsl:when
+            test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility'">
+          <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']/gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
+          <MIM_ResponsiblePerson><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']/gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
+
+        </xsl:when>
+        <xsl:when
+            test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility'">
+          <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']/gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
+          <MIM_ResponsiblePerson><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']/gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
+
+        </xsl:when>
+        <xsl:otherwise>
+          <MIM_ResponsibleOrganisation></MIM_ResponsibleOrganisation>
+          <MIM_ResponsiblePerson></MIM_ResponsiblePerson>
+        </xsl:otherwise>
+      </xsl:choose>
+
+      <ReportingRecipientOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']/gmd:organisationName/gco:CharacterString"/></ReportingRecipientOrganisation>
+
+      <!-- TODO: Metadata last updated -->
+      <MetadataLastUpdated></MetadataLastUpdated>
+
+      <DeadlineNextReporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate/gco:Date" /></DeadlineNextReporting>
+
+      <DateLastSummitedReport><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue = 'publication']/gmd:date/gco:Date" /></DateLastSummitedReport>
+
+      <Link><xsl:value-of select="concat(//server/protocol, '://', //server/host,':', //server/port, /root/gui/url, 'metadata.show?id=', geonet:info/id ,'&amp;currTab=simple')"/></Link>
+    </metadata>
+  </xsl:template>
 </xsl:stylesheet>

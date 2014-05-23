@@ -5,7 +5,9 @@
 
 
   <file name=".*/WEB-INF/config.xml">
+    <!-- Use custom main page with geodata tab -->
     <replaceAtt xpath="services/service[@name='main.home']/output" attName="sheet" value="geodata/main-page.xsl" />
+
 
     <addXML xpath="services">
       <service name="main.search.suggest.ui">
@@ -26,9 +28,10 @@
 
         <output sheet="geodata/search-suggestions.xsl" />
       </service>
-
     </addXML>
 
+    <!-- Set content type to csv -->
+    <replaceAtt xpath="services/service[@name='csv.present']" attName="contentType" value="text/x-csv; charset=UTF-8"  />
   </file>
 
 </overrides>

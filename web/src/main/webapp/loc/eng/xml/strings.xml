@@ -1401,4 +1401,17 @@
 	<welcome.text>Welcome to GeoNetwork</welcome.text>
 	<tag_label>Tags</tag_label>
 	<map_label>Map</map_label>
+
+  <csvExportColumns>
+    <iso19139>
+      <Title>Title of reporting obligations</Title>
+      <MIM_ResponsibleOrganisation>MIM responsible Organisation</MIM_ResponsibleOrganisation>
+      <MIM_ResponsiblePerson>MIM responsible Person</MIM_ResponsiblePerson>
+      <ReportingRecipientOrganisation>Reporting Recipient Organisation</ReportingRecipientOrganisation>
+      <MetadataLastUpdated>Metadata last updated</MetadataLastUpdated>
+      <DeadlineNextReporting>Deadline (next reporting)</DeadlineNextReporting>
+      <DateLastSummitedReport>Date for last submitted report</DateLastSummitedReport>
+      <Link>Link to metadata</Link>
+    </iso19139>
+  </csvExportColumns>
 </strings>

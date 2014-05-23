@@ -59,7 +59,6 @@
 
 	<!-- Main template -->
 	<xsl:template name="content" match="/">
-		
 		<!-- Sort results first as csv output could be different from one schema to another. 
 		Create the sorted set based on the search response. Use the brief mode or the csv mode if 
 		available.
@@ -91,17 +90,32 @@
 				<xsl:copy-of select="exslt:node-set($md)/*[1]"/>
 			</xsl:for-each>
 		</xsl:variable>
-		
+
+    <xsl:variable name="columnTranslations" select="/root/gui/strings/csvExportColumns" />
+
 		<xsl:variable name="columns">
 			<xsl:for-each-group select="$sortedResults/*" group-by="geonet:info/schema">
-				<schema name="{current-grouping-key()}">
+				<xsl:variable name="schemaName" select="current-grouping-key()" />
+        <xsl:message>schemaName: <xsl:value-of select="$schemaName" /></xsl:message>
+        <schema name="{current-grouping-key()}">
 				<xsl:for-each-group select="current-group()/*[name(.)!='geonet:info']"  group-by="name(.)">
-					<column name="{name(.)}">"<xsl:value-of select="name(.)"/>"</column>
+          <xsl:variable name="columnKey" select="name(.)" />
+          <xsl:message>columnKey: <xsl:value-of select="$columnKey" /></xsl:message>
+            <xsl:choose>
+              <xsl:when test="string($columnTranslations/*[name() = $schemaName]/*[name() = $columnKey])">
+                <column name="{name(.)}">"<xsl:value-of select="$columnTranslations/*[name() = $schemaName]/*[name() = $columnKey]"/>"</column>
+              </xsl:when>
+              <xsl:otherwise>
+                <column name="{name(.)}">"<xsl:value-of select="name(.)"/>"</column>
+              </xsl:otherwise>
+            </xsl:choose>
+
 				</xsl:for-each-group>
 				</schema>
 			</xsl:for-each-group>
 		</xsl:variable>
-		
+
+    <xsl:message>columns: <xsl:value-of select="$columns" /></xsl:message>
 		<!-- Display results
 				* header first (once)
 				* content then.
@@ -112,14 +126,15 @@
 				<xsl:when test="position()!=1 and $currentSchema=preceding-sibling::node()/geonet:info/schema"/>
 				<xsl:otherwise>
 					<!-- CSV header, schema and id first, then from schema column list -->
-					<xsl:text>"schema"</xsl:text>
-					<xsl:value-of select="$sep"/>
+					<!--<xsl:text>"schema"</xsl:text>-->
+					<!--<xsl:value-of select="$sep"/>-->
 					<xsl:text>"uuid"</xsl:text>
 					<xsl:value-of select="$sep"/>
 					<xsl:text>"id"</xsl:text>
 					<xsl:value-of select="$sep"/>
-					
-					<xsl:value-of select="string-join($columns/schema[@name=$currentSchema]/column, 
+
+
+					<xsl:value-of select="string-join($columns/schema[@name=$currentSchema]/column,
 														$sep)"></xsl:value-of>
 					
 					<xsl:call-template name="newLine"/>
