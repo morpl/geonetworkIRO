@@ -28,7 +28,7 @@ function gn_anyKeyObserver(e)
 }
 
 function runCsvSearch() {
-    var serviceUrl = getGNServiceURL('csv.search');
+    var serviceUrl = getGNServiceURL('export.csv');
     if ($("advanced_search_pnl").visible()) {
         serviceUrl = serviceUrl + "?" + fetchParam('template');
 	}

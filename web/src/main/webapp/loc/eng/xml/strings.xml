@@ -1403,6 +1403,10 @@
 	<map_label>Map</map_label>
 
   <csvExportColumns>
+    <uuid>Metadata UUID</uuid>
+    <id>Metadata ID</id>
+    <link>Link to metadata</link>
+
     <iso19139>
       <Title>Title of reporting obligations</Title>
       <MIM_ResponsibleOrganisation>MIM responsible Organisation</MIM_ResponsibleOrganisation>
@@ -1411,7 +1415,6 @@
       <MetadataLastUpdated>Metadata last updated</MetadataLastUpdated>
       <DeadlineNextReporting>Deadline (next reporting)</DeadlineNextReporting>
       <DateLastSummitedReport>Date for last submitted report</DateLastSummitedReport>
-      <Link>Link to metadata</Link>
     </iso19139>
   </csvExportColumns>
 </strings>

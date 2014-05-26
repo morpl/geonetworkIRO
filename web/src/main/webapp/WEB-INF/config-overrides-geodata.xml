@@ -30,8 +30,13 @@
       </service>
     </addXML>
 
-    <!-- Set content type to csv -->
+    <!-- Set content type to csv and use custom xsl -->
     <replaceAtt xpath="services/service[@name='csv.present']" attName="contentType" value="text/x-csv; charset=UTF-8"  />
-  </file>
+    <replaceAtt xpath="services/service[@name='csv.present']/output" attName="sheet" value="geodata/csv-search.xsl"  />
 
+    <!-- Rename csv.search to export.csv. The service name is used for the file saved named. Adding the csv extension allows to be
+          open by Excel or similar app by default -->
+    <replaceAtt xpath="services/service[@name='csv.search']" attName="name" value="export.csv"  />
+
+  </file>
 </overrides>

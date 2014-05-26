@@ -37,18 +37,20 @@
 	<xsl:output method="text" version="1.0" encoding="utf-8" indent="no"/>	
 	
 	<xsl:strip-space elements="*"/>
-	
-	<!-- Field separator:
-		To use tab instead of semicolon, use "&#009;".
-		Default is comma.
-	-->
+
+  <xsl:variable name="server" select="concat(//server/protocol, '://', //server/host,':', //server/port)" />
+
+  <!-- Field separator:
+    To use tab instead of semicolon, use "&#009;".
+    Default is comma.
+  -->
 	<xsl:variable name="sep" select="','"/>
 	
 	<!-- Intra field separator -->
 	<xsl:variable name="internalSep" select="'###'"/>
 	
-	<xsl:include href="utils.xsl"/>
-	<xsl:include href="metadata.xsl"/>
+	<xsl:include href="../utils.xsl"/>
+	<xsl:include href="../metadata.xsl"/>
 
 	<!-- A template to add a new line \n with no extra space. -->	
 	<xsl:template name="newLine">
@@ -59,7 +61,6 @@
 
 	<!-- Main template -->
 	<xsl:template name="content" match="/">
-		
 		<!-- Sort results first as csv output could be different from one schema to another. 
 		Create the sorted set based on the search response. Use the brief mode or the csv mode if 
 		available.
@@ -91,59 +92,82 @@
 				<xsl:copy-of select="exslt:node-set($md)/*[1]"/>
 			</xsl:for-each>
 		</xsl:variable>
-		
+
+    <xsl:variable name="columnTranslations" select="/root/gui/strings/csvExportColumns" />
+
 		<xsl:variable name="columns">
 			<xsl:for-each-group select="$sortedResults/*" group-by="geonet:info/schema">
-				<schema name="{current-grouping-key()}">
+				<xsl:variable name="schemaName" select="current-grouping-key()" />
+        <!--<xsl:message>schemaName: <xsl:value-of select="$schemaName" /></xsl:message>-->
+        <schema name="{current-grouping-key()}">
 				<xsl:for-each-group select="current-group()/*[name(.)!='geonet:info']"  group-by="name(.)">
-					<column name="{name(.)}">"<xsl:value-of select="name(.)"/>"</column>
+          <xsl:variable name="columnKey" select="name(.)" />
+          <!--<xsl:message>columnKey: <xsl:value-of select="$columnKey" /></xsl:message>-->
+            <xsl:choose>
+              <xsl:when test="string($columnTranslations/*[name() = $schemaName]/*[name() = $columnKey])">
+                <column name="{name(.)}">"<xsl:value-of select="$columnTranslations/*[name() = $schemaName]/*[name() = $columnKey]"/>"</column>
+              </xsl:when>
+              <xsl:otherwise>
+                <column name="{name(.)}">"<xsl:value-of select="name(.)"/>"</column>
+              </xsl:otherwise>
+            </xsl:choose>
+
 				</xsl:for-each-group>
 				</schema>
 			</xsl:for-each-group>
 		</xsl:variable>
-		
+
+    <!--<xsl:message>columns: <xsl:value-of select="$columns" /></xsl:message>-->
+
 		<!-- Display results
 				* header first (once)
 				* content then.
 		-->
 		<xsl:for-each select="$sortedResults/*">
 			<xsl:variable name="currentSchema" select="geonet:info/schema"/>
-			<xsl:choose>
-				<xsl:when test="position()!=1 and $currentSchema=preceding-sibling::node()/geonet:info/schema"/>
+      <xsl:choose>
+        <xsl:when test="position()!=1 and $currentSchema=preceding-sibling::node()/geonet:info/schema"/>
 				<xsl:otherwise>
 					<!-- CSV header, schema and id first, then from schema column list -->
-					<xsl:text>"schema"</xsl:text>
+					<!--<xsl:text>"schema"</xsl:text>-->
+					<!--<xsl:value-of select="$sep"/>-->
+          <xsl:value-of select="concat('&quot;', $columnTranslations/uuid, '&quot;')" />
 					<xsl:value-of select="$sep"/>
-					<xsl:text>"uuid"</xsl:text>
+          <xsl:value-of select="concat('&quot;', $columnTranslations/id, '&quot;')" />
 					<xsl:value-of select="$sep"/>
-					<xsl:text>"id"</xsl:text>
-					<xsl:value-of select="$sep"/>
-					
-					<xsl:value-of select="string-join($columns/schema[@name=$currentSchema]/column, 
+
+
+					<xsl:value-of select="string-join($columns/schema[@name=$currentSchema]/column,
 														$sep)"></xsl:value-of>
 
+          <xsl:value-of select="$sep"/>
+          <xsl:value-of select="concat('&quot;', $columnTranslations/link, '&quot;')" />
 
 					<xsl:call-template name="newLine"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-			<xsl:call-template name="csvLine">
-				<xsl:with-param name="columns" select="$columns/schema[@name=$currentSchema]/column"/>
-				<xsl:with-param name="metadata" select="."/>
-			</xsl:call-template>
-		</xsl:for-each>
-		
-	</xsl:template>
-	
-	<!-- Dump line -->
+        </xsl:otherwise>
+      </xsl:choose>
+
+<xsl:call-template name="csvLine">
+  <xsl:with-param name="columns" select="$columns/schema[@name=$currentSchema]/column"/>
+  <xsl:with-param name="metadata" select="."/>
+</xsl:call-template>
+</xsl:for-each>
+
+</xsl:template>
+
+<!-- Dump line -->
 	<xsl:template name="csvLine">
 		<xsl:param name="columns"/>
 		<xsl:param name="metadata"/>
 		
-		<xsl:value-of select="concat('&quot;', $metadata/geonet:info/schema, '&quot;', $sep, 
+		<!--<xsl:value-of select="concat('&quot;', $metadata/geonet:info/schema, '&quot;', $sep,
 									'&quot;', $metadata/geonet:info/uuid, '&quot;', $sep, 
+									'&quot;', $metadata/geonet:info/id, '&quot;', $sep)"/>-->
+
+    <xsl:value-of select="concat('&quot;', $metadata/geonet:info/uuid, '&quot;', $sep,
 									'&quot;', $metadata/geonet:info/id, '&quot;', $sep)"/>
-		
+
+
 		<xsl:for-each select="$columns">
 			<xsl:variable name="currentColumn" select="@name"/>
 			<xsl:text>"</xsl:text>
@@ -157,7 +181,9 @@
 			</xsl:choose>
 			<xsl:text>"</xsl:text><xsl:value-of select="$sep"/>
 		</xsl:for-each>
-		
-		<xsl:call-template name="newLine"/>
+
+    <xsl:value-of select="concat('=HYPERLINK(', '&quot;', $server, '/geonetwork?uuid=', geonet:info/uuid, '&quot;)')"/>
+
+    <xsl:call-template name="newLine"/>
 	</xsl:template>
 </xsl:stylesheet>

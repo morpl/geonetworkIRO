@@ -175,14 +175,42 @@
     <xsl:param name="gui"/>
     <xsl:param name="remote"/>
 
+    <xsl:variable name="columnTranslations" select="/root/gui/strings/csvExportColumns" />
+
+
     <xsl:for-each select="$res/*">
 
-      <xsl:variable name="md">
+      <!--<xsl:variable name="md">
         <xsl:apply-templates mode="brief" select="."/>
+      </xsl:variable>-->
+
+
+      <!-- Try to apply csv mode template to current metadata record -->
+      <xsl:variable name="mdpdf">
+        <xsl:apply-templates mode="pdf" select=".">
+          <xsl:with-param name="internalSep" select="'###'"/>
+        </xsl:apply-templates>
       </xsl:variable>
+
+      <!--<xsl:message>PDF ..... <xsl:value-of select="$mdpdf" /></xsl:message>-->
+      <!-- If not define just use the brief format -->
+      <xsl:variable name="md">
+        <xsl:copy-of select="$mdpdf"/>
+        <xsl:choose>
+          <xsl:when test=". != $mdpdf">
+            <xsl:message>PDF 1</xsl:message>
+            <xsl:copy-of select="$mdpdf"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:message>PDF 2</xsl:message>
+            <xsl:apply-templates mode="brief" select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+
       <xsl:variable name="metadata" select="exslt:node-set($md)/*[1]"/>
       <xsl:variable name="source" select="string($metadata/geonet:info/source)"/>
-
 
       <xsl:if test="$metadata/geonet:info/id != ''">
         <fo:table-row border-top-style="solid" border-right-style="solid" border-left-style="solid"
@@ -233,22 +261,51 @@
 
 
                             <xsl:call-template name="info-rows">
-                              <xsl:with-param name="label" select="$gui/strings/abstract"/>
-                              <xsl:with-param name="value" select="$metadata/abstract"/>
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/Title"/>
+                              <xsl:with-param name="value" select="$metadata/Title"/>
                             </xsl:call-template>
 
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MIM_ResponsibleOrganisation"/>
+                              <xsl:with-param name="value" select="$metadata/MIM_ResponsibleOrganisation"/>
+                            </xsl:call-template>
 
                             <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MIM_ResponsiblePerson"/>
+                              <xsl:with-param name="value" select="$metadata/MIM_ResponsiblePerson"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/ReportingRecipientOrganisation"/>
+                              <xsl:with-param name="value" select="$metadata/ReportingRecipientOrganisation"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MetadataLastUpdated"/>
+                              <xsl:with-param name="value" select="$metadata/MetadataLastUpdated"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/DeadlineNextReporting"/>
+                              <xsl:with-param name="value" select="$metadata/DeadlineNextReporting"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/DateLastSummitedReport"/>
+                              <xsl:with-param name="value" select="$metadata/DateLastSummitedReport"/>
+                            </xsl:call-template>
+
+                            <!--<xsl:call-template name="info-rows">
                               <xsl:with-param name="label" select="$gui/strings/keywords"/>
                               <xsl:with-param name="value"
                                 select="string-join($metadata/keyword, ', ')"/>
-                            </xsl:call-template>
+                            </xsl:call-template>-->
 
 
-                            <xsl:call-template name="info-rows">
+                            <!--<xsl:call-template name="info-rows">
                               <xsl:with-param name="label" select="$gui/strings/schema"/>
                               <xsl:with-param name="value" select="$metadata/geonet:info/schema"/>
-                            </xsl:call-template>
+                            </xsl:call-template>-->
 
                             <xsl:call-template name="metadata-resources">
                               <xsl:with-param name="gui" select="$gui"/>
