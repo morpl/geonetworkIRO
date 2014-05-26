@@ -58,6 +58,7 @@ import org.fao.geonet.kernel.csw.domain.CswCapabilitiesInfo;
 import org.fao.geonet.kernel.csw.domain.CustomElementSet;
 import org.fao.geonet.kernel.harvest.HarvestManager;
 import org.fao.geonet.kernel.schema.MetadataSchema;
+import org.fao.geonet.kernel.search.LuceneSearcher;
 import org.fao.geonet.kernel.search.SearchManager;
 import org.fao.geonet.kernel.search.spatial.Pair;
 import org.fao.geonet.kernel.setting.SettingManager;
@@ -542,6 +543,11 @@ public class DataManager {
                 Element category = (Element) category1;
                 String categoryName = category.getChildText("name");
                 moreFields.add(SearchManager.makeField("_cat", categoryName, true, true));
+
+                // GeoData customisation. Disabled for now, using title starting with IRO_ as can be processed in index_fields.xsl and other fields in that file depend on geodata_type
+                //if (categoryName.equalsIgnoreCase("iro")) {
+                //    moreFields.add(SearchManager.makeField("geodata_type", "iro", true, true));
+                //}
             }
 
             // get status
@@ -2295,7 +2301,7 @@ public class DataManager {
      */
     public void setDataCommons(Dbms dbms, ServiceContext context, String id, String licenseurl, String imageurl, String jurisdiction, String licensename, String type) throws Exception {
         Element env = prepareCommonsEnv(licenseurl, imageurl, jurisdiction, licensename, type);
-        manageCommons(dbms,context,id,env,Geonet.File.SET_DATACOMMONS);
+        manageCommons(dbms, context, id, env, Geonet.File.SET_DATACOMMONS);
     }
 
     private Element prepareCommonsEnv(String licenseurl, String imageurl, String jurisdiction, String licensename, String type) {
@@ -2322,7 +2328,7 @@ public class DataManager {
      */
     public void setCreativeCommons(Dbms dbms, ServiceContext context, String id, String licenseurl, String imageurl, String jurisdiction, String licensename, String type) throws Exception {
         Element env = prepareCommonsEnv(licenseurl, imageurl, jurisdiction, licensename, type);
-        manageCommons(dbms,context,id,env,Geonet.File.SET_CREATIVECOMMONS);
+        manageCommons(dbms, context, id, env, Geonet.File.SET_CREATIVECOMMONS);
     }
 
     /**
@@ -3120,6 +3126,10 @@ public class DataManager {
         String port    = settingMan.getValue(Geonet.Settings.SERVER_PORT);
         addElement(info, Edit.Info.Elem.BASEURL, protocol + "://" + host + (port == "80" ? "" : ":" + port) + baseURL);
         addElement(info, Edit.Info.Elem.LOCSERV, "/srv/en" );
+
+        addElement(info, "geodata_type", LuceneSearcher.getMetadataFromIndexById(context.getLanguage(), id, "geodata_type") );
+
+
         return info;
     }
 
@@ -3379,7 +3389,7 @@ public class DataManager {
         dbms.execute("UPDATE CswServerCapabilitiesInfo SET label = ? WHERE langId = ? AND field = ?", cswCapabilitiesInfo.getTitle(), langId, "title");
         dbms.execute("UPDATE CswServerCapabilitiesInfo SET label = ? WHERE langId = ? AND field = ?", cswCapabilitiesInfo.getAbstract(), langId, "abstract");
         dbms.execute("UPDATE CswServerCapabilitiesInfo SET label = ? WHERE langId = ? AND field = ?", cswCapabilitiesInfo.getFees(), langId, "fees");
-        dbms.execute("UPDATE CswServerCapabilitiesInfo SET label = ? WHERE langId = ? AND field = ?",  cswCapabilitiesInfo.getAccessConstraints(), langId, "accessConstraints");
+        dbms.execute("UPDATE CswServerCapabilitiesInfo SET label = ? WHERE langId = ? AND field = ?", cswCapabilitiesInfo.getAccessConstraints(), langId, "accessConstraints");
     }
 
     /**

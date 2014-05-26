@@ -1431,3 +1431,43 @@ div#editPanel * div table tr > td {
 .cal {
     margin: 3px;
 }
+
+table.table-search-results {
+    width: 95%;
+    border: 1px solid #cef;
+    margin: 1em 25px;
+    text-align: left;
+}
+
+table.table-search-results > thead > tr > th {
+    font-weight: bold;
+    background-color: #CFE3F6;
+    border-bottom: 1px solid #cef;
+}
+
+table.table-search-results > tbody > tr > td, table.table-search-results > thead > tr >  th {
+    padding: 4px 5px;
+}
+
+tr.row-metadata-buttons {
+    border-bottom: 1px solid #cceeff;
+}
+
+tr.row-metadata, tr.row-metadata-detail {
+    border-bottom: none;
+}
+/*.odd {
+    background-color: #e6ecf2;
+}
+.odd td {
+    border-bottom: 1px solid #e6ecf2;
+}*/
+
+
+div.hittitle {
+    padding-left: 0px;
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: 0px;
+}

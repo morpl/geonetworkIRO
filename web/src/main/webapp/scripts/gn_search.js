@@ -792,6 +792,7 @@ function gn_showMetadataTab(id, currTab)
                 var parent = $('mdwhiteboard_' + id);
                 clearNode(parent);
 
+                $('rowwhiteboard_' + id).show();
                 $('gn_loadmd_' + id) .hide();
                 $('gn_hidemd_' + id) .show();
 
@@ -822,6 +823,7 @@ function gn_hideMetadata(id)
     var div = parent.firstChild;
     Effect.BlindUp(div, { afterFinish: function (obj) {
             clearNode(parent);
+            $('rowwhiteboard_' + id).hide();
             $('gn_showmd_' + id) .show();
             $('gn_hidemd_' + id) .hide();
         }

@@ -38,5 +38,8 @@
           open by Excel or similar app by default -->
     <replaceAtt xpath="services/service[@name='csv.search']" attName="name" value="export.csv"  />
 
+    <!-- Custom results xsl -->
+    <replaceAtt xpath="services/service[@name='main.present.embedded']/output" attName="sheet" value="geodata/search-results-xhtml.xsl" />
+
   </file>
 </overrides>
