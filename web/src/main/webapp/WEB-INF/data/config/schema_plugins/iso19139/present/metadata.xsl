@@ -4390,10 +4390,8 @@
             <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
 
           </xsl:for-each>
-          <!--<MIM_ResponsibleOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']/gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
-          <MIM_ResponsiblePerson><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']/gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>-->
-
         </xsl:when>
+
         <xsl:when
             test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility'">
 
@@ -4401,13 +4399,8 @@
             <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
             <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
           </xsl:for-each>
-
-          <!--
-          <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']/gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
-          <MIM_ResponsiblePerson><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']/gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>-->
-
-
         </xsl:when>
+
         <xsl:otherwise>
           <MIM_ResponsibleOrganisation></MIM_ResponsibleOrganisation>
           <MIM_ResponsiblePerson></MIM_ResponsiblePerson>
@@ -4425,10 +4418,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!--<ReportingRecipientOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']/gmd:organisationName/gco:CharacterString"/></ReportingRecipientOrganisation>-->
-
-      <!-- TODO: Metadata last updated -->
-      <MetadataLastUpdated></MetadataLastUpdated>
+      <MetadataMaintenanceNote><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString" /></MetadataMaintenanceNote>
 
       <DeadlineNextReporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate/gco:Date" /></DeadlineNextReporting>
 
@@ -4457,10 +4447,8 @@
             <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
 
           </xsl:for-each>
-          <!--<MIM_ResponsibleOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']/gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
-          <MIM_ResponsiblePerson><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']/gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>-->
-
         </xsl:when>
+
         <xsl:when
             test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility'">
 
@@ -4468,13 +4456,8 @@
             <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
             <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
           </xsl:for-each>
-
-          <!--
-          <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']/gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
-          <MIM_ResponsiblePerson><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']/gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>-->
-
-
         </xsl:when>
+
         <xsl:otherwise>
           <MIM_ResponsibleOrganisation></MIM_ResponsibleOrganisation>
           <MIM_ResponsiblePerson></MIM_ResponsiblePerson>
@@ -4492,10 +4475,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!--<ReportingRecipientOrganisation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']/gmd:organisationName/gco:CharacterString"/></ReportingRecipientOrganisation>-->
-
-      <!-- TODO: Metadata last updated -->
-      <MetadataLastUpdated></MetadataLastUpdated>
+      <MetadataMaintenanceNote><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString" /></MetadataMaintenanceNote>
 
       <DeadlineNextReporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate/gco:Date" /></DeadlineNextReporting>
 

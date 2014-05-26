@@ -1412,9 +1412,9 @@
       <MIM_ResponsibleOrganisation>MIM responsible Organisation</MIM_ResponsibleOrganisation>
       <MIM_ResponsiblePerson>MIM responsible Person</MIM_ResponsiblePerson>
       <ReportingRecipientOrganisation>Reporting Recipient Organisation</ReportingRecipientOrganisation>
-      <MetadataLastUpdated>Metadata last updated</MetadataLastUpdated>
       <DeadlineNextReporting>Deadline (next reporting)</DeadlineNextReporting>
       <DateLastSummitedReport>Date for last submitted report</DateLastSummitedReport>
+      <MetadataMaintenanceNote>Metadata maintenance note</MetadataMaintenanceNote>
     </iso19139>
   </csvExportColumns>
 </strings>

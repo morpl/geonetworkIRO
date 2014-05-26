@@ -131,17 +131,17 @@
 					<!-- CSV header, schema and id first, then from schema column list -->
 					<!--<xsl:text>"schema"</xsl:text>-->
 					<!--<xsl:value-of select="$sep"/>-->
-          <xsl:value-of select="concat('&quot;', $columnTranslations/uuid, '&quot;')" />
-					<xsl:value-of select="$sep"/>
-          <xsl:value-of select="concat('&quot;', $columnTranslations/id, '&quot;')" />
-					<xsl:value-of select="$sep"/>
-
 
 					<xsl:value-of select="string-join($columns/schema[@name=$currentSchema]/column,
 														$sep)"></xsl:value-of>
 
           <xsl:value-of select="$sep"/>
           <xsl:value-of select="concat('&quot;', $columnTranslations/link, '&quot;')" />
+          <xsl:value-of select="$sep"/>
+          <xsl:value-of select="concat('&quot;', $columnTranslations/uuid, '&quot;')" />
+          <xsl:value-of select="$sep"/>
+          <xsl:value-of select="concat('&quot;', $columnTranslations/id, '&quot;')" />
+
 
 					<xsl:call-template name="newLine"/>
         </xsl:otherwise>
@@ -164,8 +164,6 @@
 									'&quot;', $metadata/geonet:info/uuid, '&quot;', $sep, 
 									'&quot;', $metadata/geonet:info/id, '&quot;', $sep)"/>-->
 
-    <xsl:value-of select="concat('&quot;', $metadata/geonet:info/uuid, '&quot;', $sep,
-									'&quot;', $metadata/geonet:info/id, '&quot;', $sep)"/>
 
 
 		<xsl:for-each select="$columns">
@@ -183,6 +181,9 @@
 		</xsl:for-each>
 
     <xsl:value-of select="concat('=HYPERLINK(', '&quot;', $server, '/geonetwork?uuid=', geonet:info/uuid, '&quot;)')"/>
+
+    <xsl:value-of select="concat($sep,'&quot;', $metadata/geonet:info/uuid, '&quot;', $sep,
+									'&quot;', $metadata/geonet:info/id, '&quot;')"/>
 
     <xsl:call-template name="newLine"/>
 	</xsl:template>

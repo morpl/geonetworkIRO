@@ -213,7 +213,7 @@
       <xsl:variable name="source" select="string($metadata/geonet:info/source)"/>
 
       <xsl:if test="$metadata/geonet:info/id != ''">
-        <fo:table-row border-top-style="solid" border-right-style="solid" border-left-style="solid"
+        <!--<fo:table-row border-top-style="solid" border-right-style="solid" border-left-style="solid"
           border-top-color="{$background-color}" border-right-color="{$background-color}"
           border-left-color="{$background-color}"
           page-break-inside="avoid">
@@ -232,17 +232,18 @@
               <xsl:value-of select="$metadata/title"/>
             </fo:block>
           </fo:table-cell>
-        </fo:table-row>
-        <fo:table-row border-bottom-style="solid" border-right-style="solid"
-          border-left-style="solid" border-bottom-color="{$background-color}"
-          border-right-color="{$background-color}" border-left-color="{$background-color}"
+        </fo:table-row>-->
+        <fo:table-row
           keep-with-previous.within-page="always"
           page-break-inside="avoid">
+          <!--border-bottom-style="solid" border-right-style="solid"
+          border-left-style="solid" border-bottom-color="{$background-color}"
+          border-right-color="{$background-color}" border-left-color="{$background-color}"-->
           <fo:table-cell number-columns-spanned="2">
             <fo:block margin-left="2pt" margin-right="4pt" margin-top="4pt" margin-bottom="4pt">
               <fo:table>
-                <fo:table-column column-width="14.8cm"/>
-                <fo:table-column column-width="4.8cm"/>
+                <!--<fo:table-column column-width="14.8cm"/>
+                <fo:table-column column-width="4.8cm"/>-->
                 <fo:table-body>
                   <fo:table-row>
                     <fo:table-cell>
@@ -250,8 +251,8 @@
 
                         <!-- Labels and values-->
                         <fo:table>
-                          <fo:table-column column-width="3cm"/>
-                          <fo:table-column column-width="11.4cm"/>
+                          <fo:table-column column-width="4.4cm"/>
+                          <fo:table-column column-width="15cm"/>
 
                           <fo:table-body>
                             <xsl:call-template name="info-rows">
@@ -281,8 +282,8 @@
                             </xsl:call-template>
 
                             <xsl:call-template name="info-rows">
-                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MetadataLastUpdated"/>
-                              <xsl:with-param name="value" select="$metadata/MetadataLastUpdated"/>
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MetadataMaintenanceNote"/>
+                              <xsl:with-param name="value" select="$metadata/MetadataMaintenanceNote"/>
                             </xsl:call-template>
 
                             <xsl:call-template name="info-rows">
@@ -318,12 +319,12 @@
 
                       </fo:block>
                     </fo:table-cell>
-                    <fo:table-cell background-color="{$background-color-thumbnail}">
+                    <!--<fo:table-cell background-color="{$background-color-thumbnail}">
                       <xsl:call-template name="metadata-thumbnail-block">
                         <xsl:with-param name="metadata" select="$metadata"/>
                         <xsl:with-param name="server" select="$server"/>
                       </xsl:call-template>
-                    </fo:table-cell>
+                    </fo:table-cell>-->
                   </fo:table-row>
                 </fo:table-body>
               </fo:table>
