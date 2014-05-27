@@ -5,6 +5,24 @@
 
 
   <file name=".*/WEB-INF/config.xml">
+    <replaceXML xpath="resources">
+      <!-- The direct connection -->
+      <resource enabled="true">
+        <name>main-db</name>
+        <provider>jeeves.resources.dbms.ApacheDBCPool</provider>
+        <config>
+          <user>${db.user}</user>
+          <password>${db.pass}</password>
+          <driver>${db.driver}</driver>
+          <url>${db.url}</url>
+          <poolSize>30</poolSize>
+          <minIdle>0</minIdle>
+          <maxIdle>10</maxIdle>
+          <validationQuery>SELECT 1</validationQuery>
+        </config>
+      </resource>
+    </replaceXML>
+
     <!-- Use custom main page with geodata tab -->
     <replaceAtt xpath="services/service[@name='main.home']/output" attName="sheet" value="geodata/main-page.xsl" />
 

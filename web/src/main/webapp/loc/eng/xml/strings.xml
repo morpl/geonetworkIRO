@@ -1409,12 +1409,13 @@
 
     <iso19139>
       <Title>Title of reporting obligations</Title>
-      <MIM_ResponsibleOrganisation>MIM responsible Organisation</MIM_ResponsibleOrganisation>
-      <MIM_ResponsiblePerson>MIM responsible Person</MIM_ResponsiblePerson>
+      <MIM_ResponsibleOrganisation>MIM Responsible Organisation</MIM_ResponsibleOrganisation>
+      <MIM_ResponsiblePerson>MIM Responsible Person</MIM_ResponsiblePerson>
       <ReportingRecipientOrganisation>Reporting Recipient Organisation</ReportingRecipientOrganisation>
       <DeadlineNextReporting>Deadline (next reporting)</DeadlineNextReporting>
       <DateLastSummitedReport>Date for last submitted report</DateLastSummitedReport>
       <MetadataMaintenanceNote>Metadata maintenance note</MetadataMaintenanceNote>
+      <DateLastUpdate>Date last update</DateLastUpdate>
     </iso19139>
   </csvExportColumns>
 
