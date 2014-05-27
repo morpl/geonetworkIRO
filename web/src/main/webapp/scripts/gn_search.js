@@ -1415,12 +1415,26 @@ function runAdvancedGeoDataSearch(type){
 
   $("geodata_type").value = metadataTypeValues.join(" or ");
 
-  //$("organisationRole").value = $("contact-role").value + "|" + $("organisation").value;
   if ($('responsibleDepartment').checked) {
-    $("organisationRole").value = $("organisation").value;
+    if ($("contact-role").value) {
+      $("organisationRole").value = $("organisation").value;
+      $("organisationNoRole").value = '';
+
+    } else {
+      $("organisationRole").value = '';
+      $("organisationNoRole").value = $("organisation").value;
+    }
+
     $("individualRole").value = '';
   } else {
-    $("individualRole").value = $("individual").value;
+    if ($("contact-role").value) {
+      $("individualRole").value = $("individual").value;
+      $("individualNoRole").value = '';
+
+    } else {
+      $("individualRole").value = '';
+      $("individualNoRole").value = $("individual").value;
+    }
     $("organisationRole").value = '';
   }
 
@@ -1499,6 +1513,10 @@ function resetAdvancedGeoDataSearch() {
   setBoolParam(form['radfrom0_geodata'],true);
   form['radfromiro1_geodata'].disable();
   form['radfromext1_geodata'].disable();
+
+  $('responsiblePerson').checked = true;
+  $('organisation').options.length = 0;
+  $('individual').options.length = 0;
 
   setParam(form['requestedLanguage'],      Env.lang);
   setParam(form['sortBy'],      'relevance');
@@ -1589,34 +1607,37 @@ function setDatesGeodata(what)
   Updates the contacts list based on the selected role.
  */
 function updateContactsGeodata() {
-  /*var pars = "field=";
-  if ($('contact-role').value) {
-    pars += "organisation_" + $('contact-role').value  + "&q=" + $('contact-role').value + "|";
-  } else {
-    pars += "organisation&q=";
-  }*/
-
   Element.hide('spinner-individual');
   Element.hide('spinner-organisation');
 
-  var field = "";
+  var pars = "";
+
   if ($('responsibleDepartment').checked) {
     Element.hide("individualRoleContainer");
     Element.show("organisationRoleContainer");
 
     Element.show('spinner-organisation');
 
-    field = "organisationRole";
+    if ($("contact-role").value) {
+      pars = "field=organisationRole&q="+$('contact-role').value+"|"
+
+    } else {
+      pars = "field=organisationNoRole&q="
+    }
+
   } else {
     Element.hide("organisationRoleContainer");
     Element.show("individualRoleContainer");
 
     Element.show('spinner-individual');
 
-    field = "individualRole";
-  }
+    if ($("contact-role").value) {
+      pars = "field=individualRole&q="+$('contact-role').value+"|"
 
-  var pars = "field=" + field + "&q="+$('contact-role').value+"|"
+    } else {
+      pars = "field=individualNoRole&q="
+    }
+  }
 
   var myAjax = new Ajax.Request(
     getGNServiceURL('main.search.suggest.contacts'),
@@ -1648,10 +1669,12 @@ function updateContactsGeodata() {
         select.options.length = 0;
 
         // Fill organisations with JSON response
+        select.options[select.options.length] = new Option("", "");
         for(var i = 0; i< json.data.length; i++) {
           select.options[select.options.length] = new Option(json.data[i].label, json.data[i].value);
         }
       },
+
       onFailure: function(resp) {
         Element.hide('spinner-individual');
         Element.hide('spinner-organisation');
@@ -1661,4 +1684,28 @@ function updateContactsGeodata() {
     }
   );
 }
+
+function updateOptionsField(value, field) {
+  $(field + '_simple').value = value;
+  $(field).value = value;
+  $(field + '_geodata').value = value;
+
+  if (sortBy == 'sortBy') {
+    if (value=='title') {
+      $('sortOrder').value = 'reverse';
+      $('sortOrder_simple').value = 'reverse';
+      $('sortOrder_geodata').value = 'reverse';
+    } else {
+      $('sortOrder').value = '';
+      $('sortOrder_simple').value = '';
+      $('sortOrder_geodata').value = '';
+    }
+  }
+}
+
+function updateRestrictionField(value, field) {
+  $(field).value = value;
+  $(field + '_geodata').value = value;
+}
+
 /*** EOF ***********************************************************/

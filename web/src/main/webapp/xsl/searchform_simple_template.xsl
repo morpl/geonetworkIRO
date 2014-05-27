@@ -114,7 +114,7 @@
                 <div class="row" >
                     <span class="labelField">Language</span>
                     <select class="content" name="requestedLanguage" id="requestedLanguage_simple" style="width: 150px"
-                            onchange="$('requestedLanguage').value = this.options[this.selectedIndex].value">
+                            onchange="updateOptionsField(this.value, 'requestedLanguage')">
                         <option value="">
                             <xsl:value-of select="/root/gui/strings/anyLanguage"/>
                         </option>
@@ -141,7 +141,7 @@
 				<div class="row">  <!-- div row-->
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/sortBy"/></span>
 					<select id="sortBy_simple" name="sortBy" size="1" class="content" 
-					  onChange="if (this.options[this.selectedIndex].value=='title') $('sortOrder_simple').value = 'reverse'; else $('sortOrder_simple').value = ''">
+					  onChange="updateOptionsField(this.value, 'sortBy')">
 						<xsl:for-each select="/root/gui/strings/sortByType">
 							<option value="{@id}">
 								<xsl:if test="@id = /root/gui/searchDefaults/sortBy">
@@ -157,7 +157,7 @@
 				<!-- hits per page - - - - - - - - - - - - - - - - - - -->
 				<div class="row">  <!-- div row-->
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/hitsPerPage"/></span>
-						<select id="hitsPerPage_simple" size="1" class="content" name="hitsPerPage" onchange="$('hitsPerPage').value = this.options[this.selectedIndex].value">
+						<select id="hitsPerPage_simple" size="1" class="content" name="hitsPerPage" onchange="updateOptionsField(this.value, 'hitsPerPage')">
 
 						<xsl:for-each select="/root/gui/strings/hitsPerPageChoice">
 						  <xsl:sort select="@value" data-type="number"/>
@@ -174,7 +174,7 @@
 				<!-- output - - - - - - - - - - - - - - - - - - - - - - -->
 				<div class="row">  <!-- div row-->
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/output"/></span>
-					<select id="output_simple" size="1" class="content" name="output" onchange="$('output').value = this.options[this.selectedIndex].value">
+					<select id="output_simple" size="1" class="content" name="output" onchange="updateOptionsField(this.value, 'output')">
 						<xsl:for-each select="/root/gui/strings/outputType">
 							<option value="{@id}">
 								<xsl:if test="(/root/gui/searchDefaults/output and @id = /root/gui/searchDefaults/output) 

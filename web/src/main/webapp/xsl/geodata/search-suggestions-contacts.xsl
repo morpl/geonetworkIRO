@@ -18,12 +18,27 @@
       }
   -->
   <xsl:template match="/">
+    {"data":
+    [
+    <xsl:choose>
+      <xsl:when test="ends-with(/root/request/field, 'NoRole')">
+        <xsl:call-template name="itemsWithoutRole" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="itemsWithRole" />
+      </xsl:otherwise>
+
+    </xsl:choose>
+    ]}
+
+  </xsl:template>
+  
+  
+  <xsl:template name="itemsWithRole">
     <xsl:variable name="query" select="/root/request/q" />
     <xsl:variable name="roleCodelist" select="/root/gui/schemas/iso19139/codelists/codelist[@name='gmd:CI_RoleCode']" />
 
-
-    {"data":
-    [<xsl:for-each select="/root/items/item">
+    <xsl:for-each select="/root/items/item">
       <xsl:sort select="tokenize(@term, '\|')[2]" />
 
       <xsl:variable name="value">
@@ -51,8 +66,27 @@
       </xsl:if>
 
       <xsl:if test="position()!=last() and string($value2)"
-        >,</xsl:if>
-    </xsl:for-each> ]}
+          >,</xsl:if>
+    </xsl:for-each>
+  </xsl:template>
 
+
+  <xsl:template name="itemsWithoutRole">
+    <xsl:for-each select="/root/items/item">
+      <xsl:sort select="@term" />
+
+      <xsl:variable name="value">
+        <xsl:call-template name="replaceString">
+          <xsl:with-param name="expr"        select="@term"/>
+          <xsl:with-param name="pattern"     select="'&quot;'"/>
+          <xsl:with-param name="replacement" select="'\&quot;'"/>
+        </xsl:call-template>
+        <xsl:if test="/root/request/withFrequency"> (<xsl:value-of select="@freq"/>)</xsl:if>
+      </xsl:variable>
+
+      {"value": "<xsl:value-of select="$value" />", "label": "<xsl:value-of select="$value" />"}
+      <xsl:if test="position()!=last()"
+          >,</xsl:if>
+    </xsl:for-each>
   </xsl:template>
 </xsl:stylesheet>

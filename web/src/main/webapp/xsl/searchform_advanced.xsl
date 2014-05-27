@@ -114,7 +114,7 @@
                 <div class="row" >
                     <span class="labelField">Language</span>
                     <select class="content" name="requestedLanguage" id="requestedLanguage" style="width: 150px"
-                            onchange="$('requestedLanguage_simple').value = this.options[this.selectedIndex].value">
+                            onchange="updateOptionsField(this.value, 'requestedLanguage')">
                         <option value="">
                             <xsl:value-of select="/root/gui/strings/anyLanguage"/>
                         </option>
@@ -139,7 +139,7 @@
 				<div class="row">
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/sortBy"/></span>
 				  <select id="sortBy" name="sortBy" size="1" class="content" 
-						 onChange="if (this.options[this.selectedIndex].value=='title') $('sortOrder').value = 'reverse'; else $('sortOrder').value = ''">
+						 onChange="updateOptionsField(this.value, 'sortBy')">
 						<xsl:for-each select="/root/gui/strings/sortByType">
 							<option value="{@id}">
 								<xsl:if test="@id = /root/gui/searchDefaults/sortBy">
@@ -155,7 +155,7 @@
 				<!-- hits per page - - - - - - - - - - - - - - - - - - -->
 				<div class="row">
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/hitsPerPage"/></span>
-					<select class="content" id="hitsPerPage" name="hitsPerPage" onchange="$('hitsPerPage_simple').value = this.options[this.selectedIndex].value">
+					<select class="content" id="hitsPerPage" name="hitsPerPage" onchange="updateOptionsField(this.value, 'hitsPerPage')">
 						<xsl:for-each select="/root/gui/strings/hitsPerPageChoice">
 						  <xsl:sort select="@value" data-type="number"/>
 						  <option>
@@ -176,7 +176,7 @@
 				<div class="row">
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/output"/></span>
 
-					<select id="output" name="output" size="1" class="content" onchange="$('output_simple').value = this.options[this.selectedIndex].value">
+					<select id="output" name="output" size="1" class="content" onchange="updateOptionsField(this.value, 'output')">
 						<xsl:for-each select="/root/gui/strings/outputType">
 							<option value="{@id}">
 								<xsl:if test="@id = /root/gui/searchDefaults/output">
@@ -195,7 +195,7 @@
 				<div class="row">
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/porCatInfoTab"/></span>
 					
-					<select class="content" name="siteId" id="siteId">
+					<select class="content" name="siteId" id="siteId" onchange="updateRestrictionField(this.value, 'siteId')">
 						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/siteId=''">
 								<xsl:attribute name="selected"/>
@@ -223,7 +223,7 @@
 					<div class="row">
 						<span class="labelField"><xsl:value-of select="/root/gui/strings/group"/></span>
 						
-						<select class="content" name="group" id="group">
+						<select class="content" name="group" id="group" onchange="updateRestrictionField(this.value, 'group')">
 							<option value="">
 								<xsl:if test="/root/gui/searchDefaults/group=''">
 									<xsl:attribute name="selected"/>
@@ -252,7 +252,7 @@
 					<div class="row">
 						<span class="labelField"><xsl:value-of select="/root/gui/strings/kind"/></span>
 						
-						<select class="content" id="template" name="template" size="1">
+						<select class="content" id="template" name="template" size="1" onchange="updateRestrictionField(this.value, 'template')">
 							<option value="n">
 								<xsl:if test="/root/gui/searchDefaults/template='n'">
 									<xsl:attribute name="selected">true</xsl:attribute>
@@ -280,7 +280,7 @@
 					<div class="row">
 						<span class="labelField"><xsl:value-of select="/root/gui/strings/category"/></span>
 						
-						<select class="content" name="category" id="category">
+						<select class="content" name="category" id="category" onchange="updateRestrictionField(this.value, 'category')">
 							<option value="">
 								<xsl:if test="/root/gui/searchDefaults/category=''">
 									<xsl:attribute name="selected"/>
@@ -306,7 +306,7 @@
 				<div class="row">
 					<span class="labelField"><xsl:value-of select="/root/gui/strings/status"/></span>
 						
-					<select class="content" name="_status" id="_status">
+					<select class="content" name="_status" id="_status" onchange="updateRestrictionField(this.value, '_status')">
 						<option value="">
 							<xsl:if test="/root/gui/searchDefaults/_status=''">
 								<xsl:attribute name="selected"/>
@@ -528,6 +528,8 @@
 			<xsl:choose>
 				<xsl:when test="not($remote)">
 				  <input id="themekey" name="themekey" onClick="popSelector(this,'keywordSelectorFrame','keywordSelector','portal.search.keywords?mode=selector&amp;keyword','themekey');" class="content" size="31" value="{/root/gui/searchDefaults/themekey}"/>
+          <!--<input id="themekey" name="themekey" class="content" size="31" value="{/root/gui/searchDefaults/themekey}"/>
+          <div id="keywordList" class="autocomplete"></div>-->
 				</xsl:when>
 				<xsl:otherwise>
 				  <input id="themekey" name="themekey" class="content" size="31" value="{/root/gui/searchDefaults/themekey}" />
@@ -901,7 +903,7 @@
 				  /root/gui/searchDefaults/hitsPerPage!='10' or
 				  /root/gui/searchDefaults/output!='full'">
 		<script type="text/javascript">
-			showFields('advoptions.img','advoptions.fieldset');
+			showFields('advoptions.img','advoptions.table');
 		</script>
 	</xsl:if>
 </xsl:template>

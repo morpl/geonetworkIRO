@@ -201,6 +201,10 @@
     <Field name="_source" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
 
     <Field name="organisationRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
+    <Field name="organisationNoRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
+
+    <Field name="individualRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
+    <Field name="individualNoRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
   </fieldSpecificAnalyzer>
   
   <fieldSpecificSearchAnalyzer>
