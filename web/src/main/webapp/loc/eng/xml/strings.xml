@@ -1417,4 +1417,37 @@
       <MetadataMaintenanceNote>Metadata maintenance note</MetadataMaintenanceNote>
     </iso19139>
   </csvExportColumns>
+
+  <geodata>
+    <searchResultsHeaders>
+      <title>Title</title>
+      <responsibleOrganisation>Responsible - Organisation</responsibleOrganisation>
+      <responsiblePerson>Responsible - Person</responsiblePerson>
+      <dateLastReporting>Date (last reporting)</dateLastReporting>
+      <dateNextReporting>Date (next reporting)</dateNextReporting>
+      <maintenanceNote>Maintenance note</maintenanceNote>
+      <pocOrganisation>Point of contact - Organisation</pocOrganisation>
+      <pocPerson>Point of contact - Person</pocPerson>
+      <abstract>Abstract</abstract>
+      <keywords>Keywords</keywords>
+      <dateLastUpdate>Date last update</dateLastUpdate>
+    </searchResultsHeaders>
+
+    <searchPanel>
+      <metadataDataset>Metadata for data set</metadataDataset>
+      <metadataService>Metadata for data services</metadataService>
+      <metadataIRO>Metadata for international reporting obligations</metadataIRO>
+      <metadataAll>All metadata</metadataAll>
+
+      <contact>Contact</contact>
+      <responsiblePerson>Responsible (person)</responsiblePerson>
+      <responsibleDepartment>Responsible (department)</responsibleDepartment>
+      <role>Role</role>
+      <name>Name</name>
+
+      <metadataDate>Metadata date</metadataDate>
+      <metadataDateType>Type</metadataDateType>
+      <IRODeadline>IRO deadline</IRODeadline>
+    </searchPanel>
+  </geodata>
 </strings>

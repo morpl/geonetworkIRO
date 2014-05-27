@@ -311,7 +311,7 @@
             </xsl:if>
           </input>
 
-          <label for="metadataType_dataset">Metadata for data set</label>
+          <label for="metadataType_dataset"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/metadataDataset" /></label>
         </td>
         <td>
           <input type="checkbox" id="metadataType_service" class="content"  value="service" onclick="metadataType_updateUI(this);">
@@ -319,13 +319,13 @@
               <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input>
-          <label for="metadataType_service">Metadata for data services</label>
+          <label for="metadataType_service"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/metadataService" /></label>
         </td>
       </tr>
       <tr>
         <td>
           <input type="checkbox" id="metadataType_all" class="content" value="" onclick="metadataType_updateUI(this);" />
-          <label for="metadataType_all">All metadata</label>
+          <label for="metadataType_all"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/metadataAll" /></label>
         </td>
         <td>
           <input type="checkbox" id="metadataType_iro" class="content" value="iro" onclick="metadataType_updateUI(this);">
@@ -333,7 +333,7 @@
               <xsl:attribute name="checked">checked</xsl:attribute>
             </xsl:if>
           </input>
-          <label for="metadataType_iro">Metadata for international reporting obligations</label>
+          <label for="metadataType_iro"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/metadataIRO" /></label>
         </td>
       </tr>
     </table>
@@ -418,7 +418,7 @@
       <a href="#" onclick="toggleSearchSection('contact')" style="margin-right:2px">
         <img id="i_contact" width="9px" height="9px" src="{/root/gui/url}/images/plus.gif" alt=""/>
       </a>
-      <xsl:value-of select="/root/gui/strings//contact"/>Contact
+      <xsl:value-of select="/root/gui/strings/geodata/searchPanel/contact"/>
     </h1>
 
     <div id="contactsearchfields" style="display:none">
@@ -427,11 +427,11 @@
           <tr>
             <td>
               <input type="radio" name="contact-responsible" id="responsiblePerson" value="" checked="checked" onchange="updateContactsGeodata()" />
-              <label for="responsiblePerson">Responsible (person)</label>
+              <label for="responsiblePerson"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/responsiblePerson" /></label>
             </td>
             <td>
               <input type="radio" name="contact-responsible" id="responsibleDepartment" value="" onchange="updateContactsGeodata()" />
-              <label for="responsibleDepartment">Responsible (department)</label>
+              <label for="responsibleDepartment"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/responsibleDepartment" /></label>
             </td>
           </tr>
 
@@ -440,7 +440,7 @@
 
       <!-- Role -->
       <div class="row">  <!-- div row-->
-        <label for="contact-role"><xsl:value-of select="/root/gui/strings/role"/>Role</label>
+        <label for="contact-role"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/role" /></label>
         <br />
         <select id="contact-role" title="Select the contact role" onchange="updateContactsGeodata()" style="width:250px">
           <option value="" selected="selected"></option>
@@ -454,7 +454,7 @@
 
       <!-- Organisation name -->
       <div class="row" id="organisationRoleContainer">  <!-- div row-->
-        <label for="organisationRole"><xsl:value-of select="/root/gui/strings/role"/>Name</label>
+        <label for="organisationRole"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/name" /></label>
         <br />
         <select id="organisation" title="Select the organisation" style="width:250px"></select>
         <img id="spinner-organisation" src="{/root/gui/url}/images/spinner.gif" width="22" height="22"/>
@@ -466,7 +466,7 @@
 
       <!-- Individual name -->
       <div class="row" id="individualRoleContainer">  <!-- div row-->
-        <label for="individualRole"><xsl:value-of select="/root/gui/strings/role"/>Name</label>
+        <label for="individualRole"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/name" /></label>
         <br />
         <select id="individual" title="Select the person" style="width:250px"></select>
         <img id="spinner-individual" src="{/root/gui/url}/images/spinner.gif" width="22" height="22"/>
@@ -496,7 +496,11 @@
       <div class="row">
         <input onclick="setDatesGeodata(0);" value="" name="radfrom" id="radfrom0_geodata" type="radio">
             <xsl:if test="string(/root/gui/searchDefaults/dateFrom)='' and string(/root/gui/searchDefaults/dateTo)=''
-                and string(/root/gui/searchDefaults/extFrom)='' and string(/root/gui/searchDefaults/extTo)=''">
+                and string(/root/gui/searchDefaults/extFrom)='' and string(/root/gui/searchDefaults/extTo)=''
+                and string(/root/gui/searchDefaults/iroDateFrom)='' and string(/root/gui/searchDefaults/iroDateTo)=''
+                and string(/root/gui/searchDefaults/creationDateFrom)='' and string(/root/gui/searchDefaults/creationDateTo)=''
+                and string(/root/gui/searchDefaults/publicationDateFrom)='' and string(/root/gui/searchDefaults/publicationDateTo)=''
+                and string(/root/gui/searchDefaults/revisionDateFrom)='' and string(/root/gui/searchDefaults/revisionDateTo)=''">
               <xsl:attribute name="checked">CHECKED</xsl:attribute>
             </xsl:if>
             <label for="radfrom0"><xsl:value-of select="/root/gui/strings/anytime"/></label>
@@ -536,17 +540,19 @@
       <!-- Metadata dates -->
       <div class="row">
         <input value="" name="radfrom" id="radfrommd1_geodata" type="radio" disabled="disabled">
-          <xsl:if test="string(/root/gui/searchDefaults/dateFrom)!='' and string(/root/gui/searchDefaults/dateTo)!=''">
+          <xsl:if test="(string(/root/gui/searchDefaults/creationDateFrom)!='' and string(/root/gui/searchDefaults/creationDateTo)!='') or
+                        (string(/root/gui/searchDefaults/publicationDateFrom)!='' and string(/root/gui/searchDefaults/publicationDateTo)!='') or
+                        (string(/root/gui/searchDefaults/revisionDateFrom)!='' and string(/root/gui/searchDefaults/revisionDateTo)!='')">
             <xsl:attribute name="checked">CHECKED</xsl:attribute>
           </xsl:if>
-          <label for="radfrommd1_geodata"><xsl:value-of select="/root/gui/strings/changeDate111"/>Metadata date</label>
+          <label for="radfrommd1_geodata"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/metadataDate" /></label>
         </input>
       </div>
 
       <!-- Change format to %Y-%m-%dT%H:%M:00 in order to have DateTime field instead of DateField -->
       <table>
         <tr>
-          <td><xsl:value-of select="/root/gui/strings/from1"/>Type</td>
+          <td><xsl:value-of select="/root/gui/strings/geodata/searchPanel/metadataDateType" /></td>
           <td>
             <select id="dateType" title="Select the date type" onclick="updateDateFilterPanels('radfrommd1_geodata')">
               <xsl:for-each select="/root/gui/schemas/iso19139/codelists/codelist[@name='gmd:CI_DateTypeCode']/entry">
@@ -578,10 +584,10 @@
       <!-- IRO deadline -->
       <div class="row">
         <input value="" name="radfrom" id="radfromiro1_geodata" type="radio" disabled="disabled">
-          <xsl:if test="string(/root/gui/searchDefaults/extFrom)!='' and string(/root/gui/searchDefaults/extTo)!=''">
+          <xsl:if test="string(/root/gui/searchDefaults/iroDateFrom)!='' and string(/root/gui/searchDefaults/iroDateTo)!=''">
             <xsl:attribute name="checked" />
           </xsl:if>
-          <label for="radfromiro1_geodata"><xsl:value-of select="/root/gui/strings/datasetIssued111"/>IRO deadline</label>
+          <label for="radfromiro1_geodata"><xsl:value-of select="/root/gui/strings/geodata/searchPanel/IRODeadline" /></label>
         </input>
       </div>
 
@@ -592,7 +598,7 @@
           <td>
             <div class="cal" id="iroDateFrom" onclick="updateDateFilterPanels('radfromiro1_geodata')"></div>
             <input type="hidden" id="iroDateFrom_format" value="%Y-%m-%d"/>
-            <input type="hidden" id="iroDateFrom_cal" value=""/>
+            <input type="hidden" id="iroDateFrom_cal" value="{/root/gui/searchDefaults/iroDateFrom}"/>
           </td>
         </tr>
         <tr>
@@ -600,7 +606,7 @@
           <td>
             <div class="cal" id="iroDateTo" onclick="updateDateFilterPanels('radfromiro1_geodata')"></div>
             <input type="hidden" id="iroDateTo_format" value="%Y-%m-%d"/>
-            <input type="hidden" id="iroDateTo_cal" value=""/>
+            <input type="hidden" id="iroDateTo_cal" value="{/root/gui/searchDefaults/iroDateTo}"/>
           </td>
         </tr>
       </table>
@@ -622,7 +628,7 @@
                     <td>
                       <div class="cal" id="extFromGeodata" onclick="updateDateFilterPanels('radfromext1_geodata')"></div>
                   <input type="hidden" id="extFromGeodata_format" value="%Y-%m-%d"/>
-                  <input type="hidden" id="extFromGeodata_cal" value=""/>
+                  <input type="hidden" id="extFromGeodata_cal" value="{/root/gui/searchDefaults/extFrom}"/>
                     </td>
                 </tr>
                 <tr>
@@ -630,7 +636,7 @@
                     <td>
                   <div class="cal" id="extToGeodata" onclick="updateDateFilterPanels('radfromext1_geodata')"></div>
                   <input type="hidden" id="extToGeodata_format" value="%Y-%m-%d"/>
-                  <input type="hidden" id="extToGeodata_cal" value=""/>
+                  <input type="hidden" id="extToGeodata_cal" value="{/root/gui/searchDefaults/extTo}"/>
                     </td>
                 </tr>
             </table>

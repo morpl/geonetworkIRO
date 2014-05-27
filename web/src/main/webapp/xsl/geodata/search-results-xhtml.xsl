@@ -941,21 +941,21 @@
     <table class="table-search-results">
       <thead>
         <tr>
-          <th style="width:25%">Title</th>
+          <th style="width:25%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/title" /></th>
           <xsl:choose>
             <xsl:when test="$type = 'iro'">
-              <th style="width:15%">Responsible - Organisation</th>
-              <th style="width:15%">Responsible - Person</th>
-              <th  style="width:10%">Date (last reporting)</th>
-              <th  style="width:10%">Date (next reporting)</th>
-              <th  style="width:16%">Maintenance note</th>
+              <th style="width:15%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/responsibleOrganisation" /></th>
+              <th style="width:15%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/responsiblePerson" /></th>
+              <th  style="width:10%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/dateLastReporting" /></th>
+              <th  style="width:10%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/dateNextReporting" /></th>
+              <th  style="width:16%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/maintenanceNote" /></th>
             </xsl:when>
             <xsl:otherwise>
-              <th style="width:15%">Point of contact - Organisation</th>
-              <th style="width:15%">Point of contact - Person</th>
-              <th style="width:20%">Abstract</th>
-              <th style="width:8%">Keywords</th>
-              <th style="width:8%">Date last updated</th>
+              <th style="width:15%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/pocOrganisation" /></th>
+              <th style="width:15%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/pocPerson" /></th>
+              <th style="width:20%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/abstract" /></th>
+              <th style="width:8%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/keywords" /></th>
+              <th style="width:8%"><xsl:value-of select="/root/gui/strings/geodata/searchResultsHeaders/dateLastUpdate" /></th>
             </xsl:otherwise>
           </xsl:choose>
           <th style="width:90px"></th>
