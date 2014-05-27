@@ -25,11 +25,6 @@
 			<xsl:comment>ADV SEARCH: WHEN?</xsl:comment>
       <xsl:call-template name="adv_when_geodata" />
 
-			<!--<xsl:comment>ADV SEARCH: INSPIRE</xsl:comment>
-			<xsl:if test="/root/gui/env/inspire/enable = 'true' and /root/gui/env/inspire/enableSearchPanel = 'true' and not($remote)">
-				<xsl:call-template name="adv_inspire"></xsl:call-template>
-			</xsl:if>-->
-
 			<!-- Search button -->
 			<div>		
 				<table class="advsearchfields" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -310,18 +305,35 @@
     <table style="border-color:#2a628f;border-style:solid;margin:5px;margin-left:10px">
       <tr>
         <td>
-          <input type="checkbox" id="metadataType_dataset" class="content" value="dataset" onclick="metadataType_updateUI(this);" /><label for="metadataType_dataset">Metadata for data set</label>
+          <input type="checkbox" id="metadataType_dataset" class="content" value="dataset" onclick="metadataType_updateUI(this);">
+            <xsl:if test="contains(/root/gui/searchDefaults/geodata_type, 'dataset')">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+
+          <label for="metadataType_dataset">Metadata for data set</label>
         </td>
         <td>
-          <input type="checkbox" id="metadataType_service" class="content"  value="service" onclick="metadataType_updateUI(this);" /><label for="metadataType_service">Metadata for data services</label>
+          <input type="checkbox" id="metadataType_service" class="content"  value="service" onclick="metadataType_updateUI(this);">
+            <xsl:if test="contains(/root/gui/searchDefaults/geodata_type, 'service')">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <label for="metadataType_service">Metadata for data services</label>
         </td>
       </tr>
       <tr>
         <td>
-          <input type="checkbox" id="metadataType_all" class="content" value="" onclick="metadataType_updateUI(this);" /><label for="metadataType_all">All metadata</label>
+          <input type="checkbox" id="metadataType_all" class="content" value="" onclick="metadataType_updateUI(this);" />
+          <label for="metadataType_all">All metadata</label>
         </td>
         <td>
-          <input type="checkbox" id="metadataType_iro" class="content" value="iro" onclick="metadataType_updateUI(this);" /><label for="metadataType_iro">Metadata for international reporting obligations</label>
+          <input type="checkbox" id="metadataType_iro" class="content" value="iro" onclick="metadataType_updateUI(this);">
+            <xsl:if test="contains(/root/gui/searchDefaults/geodata_type, 'iro')">
+              <xsl:attribute name="checked">checked</xsl:attribute>
+            </xsl:if>
+          </input>
+          <label for="metadataType_iro">Metadata for international reporting obligations</label>
         </td>
       </tr>
     </table>
@@ -414,10 +426,12 @@
         <table style="border-color:#2a628f;border-style:solid;">
           <tr>
             <td>
-              <input type="radio" name="resposible" id="resposible_person" class="content" value="" checked="checked"/><label for="resposible_person">Responsible (person)</label>
+              <input type="radio" name="contact-responsible" id="responsiblePerson" value="" checked="checked" onchange="updateContactsGeodata()" />
+              <label for="responsiblePerson">Responsible (person)</label>
             </td>
             <td>
-              <input type="radio" name="resposible" id="resposible_department" class="content" value="" /><label for="resposible_department">Responsible (department)</label>
+              <input type="radio" name="contact-responsible" id="responsibleDepartment" value="" onchange="updateContactsGeodata()" />
+              <label for="responsibleDepartment">Responsible (department)</label>
             </td>
           </tr>
 
@@ -438,17 +452,27 @@
         </select>
       </div>
 
-      <!-- Name -->
-      <div class="row">  <!-- div row-->
+      <!-- Organisation name -->
+      <div class="row" id="organisationRoleContainer">  <!-- div row-->
         <label for="organisationRole"><xsl:value-of select="/root/gui/strings/role"/>Name</label>
         <br />
         <!--<input type="text" id="organisation" size="31" class="content" value="" />
         <div id="contactList" class="autocomplete"></div>-->
-        <select id="organisation" title="Select the organisation" style="width:250px"></select>
+        <select id="organisation" title="Select the organisation" style="width:250px"></select><img id="spinner-organisation" src="{/root/gui/url}/images/spinner.gif" width="22" height="22"/>
 
         <input type="hidden" name="organisationRole" id="organisationRole" value="" />
       </div>
 
+      <!-- Individual name -->
+      <div class="row" id="individualRoleContainer">  <!-- div row-->
+        <label for="individualRole"><xsl:value-of select="/root/gui/strings/role"/>Name</label>
+        <br />
+        <!--<input type="text" id="organisation" size="31" class="content" value="" />
+        <div id="contactList" class="autocomplete"></div>-->
+        <select id="individual" title="Select the person" style="width:250px"></select><img id="spinner-individual" src="{/root/gui/url}/images/spinner.gif" width="22" height="22"/>
+
+        <input type="hidden" name="individualRole" id="individualRole" value="" />
+      </div>
     </div>
   </div>
 </xsl:template>

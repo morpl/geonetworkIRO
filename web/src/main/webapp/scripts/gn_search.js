@@ -1416,7 +1416,13 @@ function runAdvancedGeoDataSearch(type){
   $("geodata_type").value = metadataTypeValues.join(" or ");
 
   //$("organisationRole").value = $("contact-role").value + "|" + $("organisation").value;
-  $("organisationRole").value = $("organisation").value;
+  if ($('responsibleDepartment').checked) {
+    $("organisationRole").value = $("organisation").value;
+    $("individualRole").value = '';
+  } else {
+    $("individualRole").value = $("individual").value;
+    $("organisationRole").value = '';
+  }
 
   var pars = $('advanced_geodata_search_form').serialize(true);
 
@@ -1531,18 +1537,6 @@ function metadataType_updateUI(ctrl) {
       }
     }
     $("metadataType_all").checked = check;
-
-}
-
-  // If filter on iro is selected OR no filter selected, display contact and when sections
-  if ( $("metadataType_iro").checked ||
-    ($("metadataType_dataset").checked == false && $("metadataType_service").checked == false))  {
-    $("contact_container").show();
-    $("whengeodata_container").show();
-
-  } else {
-    $("contact_container").hide();
-    $("whengeodata_container").hide();
   }
 }
 
@@ -1595,15 +1589,6 @@ function setDatesGeodata(what)
   Updates the contacts list based on the selected role.
  */
 function updateContactsGeodata() {
-  /*var pars;
-  if ($('contact-role').value) {
-    pars = "field=organisationRole&q="+$('contact-role').value+"|"+$('organisationRole').value;
-
-  } else {
-    pars = "field=organisationRole&q="+$('organisationRole').value;
-
-  }*/
-
   /*var pars = "field=";
   if ($('contact-role').value) {
     pars += "organisation_" + $('contact-role').value  + "&q=" + $('contact-role').value + "|";
@@ -1611,21 +1596,67 @@ function updateContactsGeodata() {
     pars += "organisation&q=";
   }*/
 
-  var pars = "field=organisationRole&q="+$('contact-role').value+"|"
+  Element.hide('spinner-individual');
+  Element.hide('spinner-organisation');
+
+  var field = "";
+  if ($('responsibleDepartment').checked) {
+    Element.hide("individualRoleContainer");
+    Element.show("organisationRoleContainer");
+
+    Element.show('spinner-organisation');
+
+    field = "organisationRole";
+  } else {
+    Element.hide("organisationRoleContainer");
+    Element.show("individualRoleContainer");
+
+    Element.show('spinner-individual');
+
+    field = "individualRole";
+  }
+
+  var pars = "field=" + field + "&q="+$('contact-role').value+"|"
 
   var myAjax = new Ajax.Request(
-    getGNServiceURL('main.search.suggest.ui'),
+    getGNServiceURL('main.search.suggest.contacts'),
     {
       method: 'get',
       parameters: pars,
-      onSuccess: function(req) {
-        //Response received
-        $('organisation').innerHTML = req.responseText;
+      onSuccess: function(resp) {
+        Element.hide('spinner-individual');
+        Element.hide('spinner-organisation');
 
+        /*
+          Response format:
+            {"data": [
+               {"label" : "label1", "value" : "value1"},
+               {"label" : "label2", "value" : "value2"},
+               {"label" : "label3", "value" : "value3"}
+              ]
+            }
+         */
+        var json = resp.responseText.evalJSON();
+        var select;
+        if ($('responsibleDepartment').checked) {
+          select = $('organisation');
+        } else {
+          select = $('individual');
+        }
+
+        // Clear organisations
+        select.options.length = 0;
+
+        // Fill organisations with JSON response
+        for(var i = 0; i< json.data.length; i++) {
+          select.options[select.options.length] = new Option(json.data[i].label, json.data[i].value);
+        }
       },
-      onFailure: function() {
-        // TODO
-        alert("error");
+      onFailure: function(resp) {
+        Element.hide('spinner-individual');
+        Element.hide('spinner-organisation');
+
+        alert("Error retrieving contacts");
       }
     }
   );

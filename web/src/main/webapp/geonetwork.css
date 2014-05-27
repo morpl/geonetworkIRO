@@ -1432,6 +1432,10 @@ div#editPanel * div table tr > td {
     margin: 3px;
 }
 
+#spinner-organisation {
+    margin-bottom: -8px;
+}
+
 table.table-search-results {
     width: 95%;
     border: 1px solid #cef;
@@ -1471,3 +1475,4 @@ div.hittitle {
     font-weight: bold;
     margin-left: 0px;
 }
+

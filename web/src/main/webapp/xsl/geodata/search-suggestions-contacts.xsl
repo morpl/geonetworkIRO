@@ -6,33 +6,24 @@
   
   <xsl:variable name="siteURL"
     select="concat(/root/gui/env/server/protocol,'://',/root/gui/env/server/host,':',/root/gui/env/server/port, /root/gui/locService)"/>
-  
+
+  <!--
+      Response format:
+
+      {"data": [
+         {"label" : "label1", "value" : "value1"},
+         {"label" : "label2", "value" : "value2"},
+         {"label" : "label3", "value" : "value3"}
+        ]
+      }
+  -->
   <xsl:template match="/">
-    <!--<ul>
-      <xsl:for-each select="/root/items/item">
-        <xsl:variable name="value">
-          <xsl:call-template name="replaceString">
-            <xsl:with-param name="expr"        select="@term"/>
-            <xsl:with-param name="pattern"     select="'&quot;'"/>
-            <xsl:with-param name="replacement" select="'\&quot;'"/>
-          </xsl:call-template>
-          <xsl:if test="/root/request/withFrequency"> (<xsl:value-of select="@freq"/>)</xsl:if>
-        </xsl:variable>
-
-        <li>
-          <xsl:choose>
-            <xsl:when test="contains($value, '|')"><xsl:value-of select="tokenize($value, '\|')[2]" /></xsl:when>
-            <xsl:otherwise><xsl:value-of select="$value"/></xsl:otherwise>
-          </xsl:choose>
-        </li>
-      </xsl:for-each>
-    </ul>-->
-
     <xsl:variable name="query" select="/root/request/q" />
     <xsl:variable name="roleCodelist" select="/root/gui/schemas/iso19139/codelists/codelist[@name='gmd:CI_RoleCode']" />
 
-    <option value=""></option>
-    <xsl:for-each select="/root/items/item">
+
+    {"data":
+    [<xsl:for-each select="/root/items/item">
       <xsl:sort select="tokenize(@term, '\|')[2]" />
 
       <xsl:variable name="value">
@@ -51,14 +42,17 @@
         <xsl:choose>
           <xsl:when test="starts-with($query, '|')">
             <xsl:variable name="role" select="$roleCodelist/entry[code = $value1]/label" />
-            <option value="{$value}"><xsl:value-of select="$value2" /> <xsl:if test="string($role)">(<xsl:value-of select="$role" />)</xsl:if></option>
+            {"value": "<xsl:value-of select="$value" />", "label": "<xsl:value-of select="$value2" /> <xsl:if test="string($role)">(<xsl:value-of select="$role" />)</xsl:if>"}
           </xsl:when>
           <xsl:otherwise>
-            <option value="{$value}"><xsl:value-of select="$value2" /></option>
+            {"value": "<xsl:value-of select="$value" />", "label": "<xsl:value-of select="$value2" />"}
           </xsl:otherwise>
         </xsl:choose>
-
       </xsl:if>
-    </xsl:for-each>
+
+      <xsl:if test="position()!=last() and string($value2)"
+        >,</xsl:if>
+    </xsl:for-each> ]}
+
   </xsl:template>
 </xsl:stylesheet>
