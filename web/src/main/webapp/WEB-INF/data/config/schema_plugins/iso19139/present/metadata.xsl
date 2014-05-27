@@ -3315,7 +3315,12 @@
 			<xsl:value-of select="gmd:dateStamp/*"/>
 		</metadatacreationdate>
 
-		<geonet:info>
+    <!-- Geodata -->
+    <datenextreporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:dateOfNextUpdate/*" /></datenextreporting>
+    <maintenancenote><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString" /></maintenancenote>
+    <!-- End geodata -->
+
+  <geonet:info>
 			<xsl:copy-of select="geonet:info/*[name(.)!='edit']"/>
 			<xsl:choose>
 				<xsl:when test="/root/gui/env/harvester/enableEditing='false' and geonet:info/isHarvested='y'">
@@ -3348,6 +3353,7 @@
 		<xsl:param name="langId"/>
 		<xsl:param name="info"/>
 
+
 		<xsl:if test="gmd:citation/*/gmd:title">
 			<title>
 				<xsl:apply-templates mode="localised" select="gmd:citation/*/gmd:title">
@@ -3355,6 +3361,16 @@
 				</xsl:apply-templates>
 			</title>
 		</xsl:if>
+
+    <!-- Geodata -->
+    <xsl:if test="gmd:citation/*/gmd:alternateTitle">
+      <alttitle>
+        <xsl:apply-templates mode="localised" select="gmd:citation/*/gmd:alternateTitle">
+          <xsl:with-param name="langId" select="$langId"></xsl:with-param>
+        </xsl:apply-templates>
+      </alttitle>
+    </xsl:if>
+    <!-- End geodata -->
 
 		<xsl:if test="gmd:citation/*/gmd:date/*/gmd:dateType/*[@codeListValue='creation']">
 			<datasetcreationdate>
@@ -3500,7 +3516,25 @@
 				</responsibleParty>
 			</xsl:if>
 		</xsl:for-each-group>
-	</xsl:template>
+
+    <!-- Geodata -->
+    <xsl:if test="gmd:citation/*/gmd:date/*/gmd:dateType/*[@codeListValue='publication']">
+      <datelastreporting>
+        <xsl:value-of select="gmd:citation/*/gmd:date/*/gmd:date/*"/>
+      </datelastreporting>
+    </xsl:if>
+
+    <xsl:for-each select="gmd:pointOfContact/*[gmd:role/gmd:CI_RoleCode/@codeListValue='primaryResponsibility' or gmd:role/gmd:CI_RoleCode/@codeListValue='partlyResponsibility']">
+      <xsl:variable name="role" select="gmd:role/gmd:CI_RoleCode/@codeListValue"/>
+
+        <responsibleOrganisation role="{$role}">
+          <organisationName><xsl:value-of select="gmd:organisationName" /></organisationName>
+          <individualName><xsl:value-of select="gmd:individualName" /></individualName>
+        </responsibleOrganisation>
+
+    </xsl:for-each>
+    <!-- End geodata -->
+  </xsl:template>
 
 	<!-- helper to create a very simplified view of a CI_ResponsibleParty block -->
 

@@ -266,8 +266,6 @@
 				<Field name="responsibleParty" string="{concat($role, '|resource|', ., '|', $logo, '|', $email)}" store="true" index="false"/>
         <Field name="organisationRole" string="{concat($role, '|', .)}" store="true" index="true"/>
         <Field name="organisationNoRole" string="{string(.)}" store="true" index="true"/>
-        <!--<Field name="organisation_{$role}" string="{string(.)}" store="true" index="true"/>
-        <Field name="organisation" string="{string(.)}" store="true" index="true"/>-->
 			</xsl:for-each>
 
       <xsl:for-each select="gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:individualName/gco:CharacterString">
@@ -658,9 +656,6 @@
 			<xsl:variable name="logo" select="../..//gmx:FileName/@src"/>
 			
 			<Field name="responsibleParty" string="{concat($role, '|metadata|', ., '|', $logo)}" store="true" index="false"/>
-      <Field name="organisationRole" string="{concat($role, '|', .)}" store="true" index="true"/>
-      <!--<Field name="organisation_{$role}" string="{string(.)}" store="true" index="true"/>-->
-      <Field name="organisationNoRole" string="{string(.)}" store="true" index="true"/>
 		</xsl:for-each>
 
     <xsl:for-each select="gmd:contact/*/gmd:individualName/gco:CharacterString">

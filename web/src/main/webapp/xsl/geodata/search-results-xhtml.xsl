@@ -942,16 +942,20 @@
       <thead>
         <tr>
           <th style="width:25%">Title</th>
-          <th style="width:15%">Responsible - Organisation</th>
-          <th style="width:15%">Responsible - Person</th>
           <xsl:choose>
             <xsl:when test="$type = 'iro'">
-              <th  style="width:17.5%">Date (last reporting)</th>
-              <th  style="width:17.5%">Date (next reporting)</th>
+              <th style="width:15%">Responsible - Organisation</th>
+              <th style="width:15%">Responsible - Person</th>
+              <th  style="width:10%">Date (last reporting)</th>
+              <th  style="width:10%">Date (next reporting)</th>
+              <th  style="width:16%">Maintenance note</th>
             </xsl:when>
             <xsl:otherwise>
-              <th style="width:25%">Abstract</th>
-              <th style="width:10%">Keywords</th>
+              <th style="width:15%">Point of contact - Organisation</th>
+              <th style="width:15%">Point of contact - Person</th>
+              <th style="width:20%">Abstract</th>
+              <th style="width:8%">Keywords</th>
+              <th style="width:8%">Date last updated</th>
             </xsl:otherwise>
           </xsl:choose>
           <th style="width:90px"></th>
@@ -968,6 +972,8 @@
             <!--<xsl:if test="position() mod 2 != 0">
               <xsl:attribute name="class">odd</xsl:attribute>
             </xsl:if>-->
+
+            <!-- Title -->
             <td>
               <div class="hittitle1">
                 <xsl:variable name="isSelected" select="$metadata/geonet:info/selected" />
@@ -982,27 +988,49 @@
                 <!-- <input id="selId" name="{$metadata/geonet:info/id}" type="checkbox" /> -->
                 <xsl:choose>
                   <xsl:when test="/root/gui/config/search/use-separate-window-for-editor-viewer">
-                    <span onclick="popEditorViewer('{/root/gui/locService}/metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}','{$metadata/geonet:info/id}')" style="cursor:hand;cursor:pointer;text-decoration:underline;"><xsl:value-of select="$metadata/title"/></span>
+                    <span onclick="popEditorViewer('{/root/gui/locService}/metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}','{$metadata/geonet:info/id}')" style="cursor:hand;cursor:pointer;text-decoration:underline;" title="{$metadata/alttitle}"><xsl:value-of select="$metadata/title"/></span>
                   </xsl:when>
                   <xsl:otherwise>
-                    <a href="metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}">
+                    <a href="metadata.show?id={$metadata/geonet:info/id}&amp;currTab={/root/gui/env/metadata/defaultView}" title="{$metadata/alttitle}">
                       <xsl:value-of select="$metadata/title"/>
                     </a>
                   </xsl:otherwise>
                 </xsl:choose>
               </div>
             </td>
-            <td></td>
-            <td></td>
+
+
 
             <xsl:choose>
               <xsl:when test="$type = 'iro'">
-                <td></td>
-                <td></td>
+                <!-- Responsible - Organisation -->
+                <td>
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/organisationName|$metadata/responsibleParty[@role='partlyResponsibility']/organisationName" />
+                </td>
+
+                <!-- Responsible - Person -->
+                <td>
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/individualName|$metadata/responsibleParty[@role='partlyResponsibility']/individualName" />
+                </td>
+                <td><xsl:value-of select="$metadata/datelastreporting" /></td>
+                <td><xsl:value-of select="$metadata/datenextreporting" /></td>
+                <td><xsl:value-of select="$metadata/maintenancenote" /></td>
               </xsl:when>
+
               <xsl:otherwise>
+                <!-- Responsible - Organisation -->
+                <td>
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/organisationName|$metadata/responsibleParty[@role='partlyResponsibility']/organisationName|$metadata/responsibleParty/organisationName" />
+                </td>
+
+                <!-- Responsible - Person -->
+                <td>
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/individualName|$metadata/responsibleParty[@role='partlyResponsibility']/individualName|$metadata/responsibleParty/individualName" />
+                </td>
                 <td><xsl:value-of select="$metadata/abstract" /></td>
                 <td><xsl:value-of select="$metadata/keywords" /></td>
+                <!-- Last updated date (gmd:dateStamp). Field name is metadatacreationdate, but refers to gmd:dateStamp -->
+                <td><xsl:value-of select="$metadata/metadatacreationdate" /></td>
               </xsl:otherwise>
             </xsl:choose>
             <td>
@@ -1012,11 +1040,12 @@
               <br/>
               <span id="gn_showmd_{$metadata/geonet:info/id}">
                 <img src="{/root/gui/url}/images/plus.gif" onclick="gn_showMetadata({$metadata/geonet:info/id})" title="{/root/gui/strings/show}" />
-                More details
+                &#160;<a href="#" onclick="gn_showMetadata({$metadata/geonet:info/id}); return false">More details</a>
+
               </span>
               <span id="gn_hidemd_{$metadata/geonet:info/id}" style="display:none;">
                 <img src="{/root/gui/url}/images/minus.png"  onclick="gn_hideMetadata({$metadata/geonet:info/id})" title="{/root/gui/strings/show}" />
-                More details
+                &#160;<a href="#" onclick="gn_hideMetadata({$metadata/geonet:info/id}); return false">More details</a>
               </span>
 
               <span id="gn_loadmd_{$metadata/geonet:info/id}" style="display:none;">
