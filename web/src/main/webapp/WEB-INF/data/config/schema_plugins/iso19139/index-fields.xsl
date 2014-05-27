@@ -611,9 +611,9 @@
       <xsl:when test="$isDataset">
         <Field name="geodata_type" string="dataset" store="true" index="true"/>
       </xsl:when>
-	     <!-- <xsl:otherwise>
-	      ... gmd:*_DataIdentification / hierachicalLevel is used and return dataset, serie, ... 
-	      </xsl:otherwise>-->
+	    <xsl:otherwise>
+        <Field name="geodata_type" string="dataset" store="true" index="true"/>
+	     </xsl:otherwise>
 	  </xsl:choose>
 
 
