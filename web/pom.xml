@@ -538,7 +538,7 @@
           </excludes>
           <aggregations>
             <aggregation>
-              <output>${build.webapp.resources}/scripts/lib/gn.libs.js</output>
+              <output>${geonetwork.webapp.dir}/scripts/lib/gn.libs.js</output>
               <!-- files to include, path relative to output's directory or absolute path-->
               <includes>
                 <include>${geonetwork.build.dir}/scripts/sarissa.js</include>

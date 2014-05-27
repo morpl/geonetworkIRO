@@ -255,16 +255,20 @@
                           <fo:table-column column-width="15cm"/>
 
                           <fo:table-body>
+
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/Title"/>
+                              <xsl:with-param name="value" select="$metadata/Title"/>
+                              <xsl:with-param name="bold" select="true()" />
+                            </xsl:call-template>
+
                             <xsl:call-template name="info-rows">
                               <xsl:with-param name="label" select="$gui/strings/uuid"/>
                               <xsl:with-param name="value" select="$metadata/geonet:info/uuid"/>
                             </xsl:call-template>
 
 
-                            <xsl:call-template name="info-rows">
-                              <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/Title"/>
-                              <xsl:with-param name="value" select="$metadata/Title"/>
-                            </xsl:call-template>
+
 
                             <xsl:call-template name="info-rows">
                               <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MIM_ResponsibleOrganisation"/>
@@ -471,6 +475,8 @@
     <xsl:param name="label"/>
     <xsl:param name="value"/>
     <xsl:param name="content"/>
+    <xsl:param name="bold" select="false()"/>
+
     <fo:table-row border-bottom-style="solid" border-top-style="solid"
       border-top-color="{$title-color}" border-top-width=".1pt" border-bottom-color="{$title-color}"
       border-bottom-width=".1pt">
@@ -484,7 +490,12 @@
       <fo:table-cell color="{$font-color}" padding-top="4pt" padding-bottom="4pt"
         padding-right="4pt" padding-left="4pt">
         <fo:block linefeed-treatment="preserve">
-          <xsl:value-of select="$value"/>
+          <xsl:choose>
+            <xsl:when test="$bold = true()">
+              <fo:inline font-weight="bold"><xsl:value-of select="$value"/></fo:inline>
+            </xsl:when>
+            <xsl:otherwise><xsl:value-of select="$value"/></xsl:otherwise>
+          </xsl:choose>
           <xsl:copy-of select="$content"/>
         </fo:block>
       </fo:table-cell>
