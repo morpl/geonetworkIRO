@@ -1417,27 +1417,27 @@ function runAdvancedGeoDataSearch(type){
 
   if ($('responsibleDepartment').checked) {
     if ($("contact-role").value) {
-      $("organisationRoleSearch").value = $("organisation").value;
-      $("organisationNoRoleSearch").value = '';
+      $("organisationRole").value = $("organisation").value;
+      $("organisationNoRole").value = '';
 
     } else {
-      $("organisationRoleSearch").value = '';
-      $("organisationNoRoleSearch").value = $("organisation").value;
+      $("organisationRole").value = '';
+      $("organisationNoRole").value = $("organisation").value;
     }
 
-    $("individualRoleSearch").value = '';
-    $("individualNoRoleSearch").value = '';
+    $("individualRole").value = '';
+    $("individualNoRole").value = '';
   } else {
     if ($("contact-role").value) {
-      $("individualRoleSearch").value = $("individual").value;
-      $("individualNoRoleSearch").value = '';
+      $("individualRole").value = $("individual").value;
+      $("individualNoRole").value = '';
 
     } else {
-      $("individualRoleSearch").value = '';
-      $("individualNoRoleSearch").value = $("individual").value;
+      $("individualRole").value = '';
+      $("individualNoRole").value = $("individual").value;
     }
-    $("organisationRoleSearch").value = '';
-    ("organisationNoRoleSearch").value = '';
+    $("organisationRole").value = '';
+    $("organisationNoRole").value = '';
   }
 
   var pars = $('advanced_geodata_search_form').serialize(true);
@@ -1613,6 +1613,8 @@ function updateContactsGeodata() {
   Element.hide('spinner-organisation');
 
   var pars = "";
+  var section = "";
+  var role = $('contact-role').value;
 
   if ($('responsibleDepartment').checked) {
     Element.hide("individualRoleContainer");
@@ -1621,10 +1623,12 @@ function updateContactsGeodata() {
     Element.show('spinner-organisation');
 
     if ($("contact-role").value) {
-      pars = "field=organisationRole&q="+$('contact-role').value; //+"|"
+      //pars = "field=organisationRole&q="+$('contact-role').value+"|"
+      section = "organisationRole";
 
     } else {
-      pars = "field=organisationNoRole&q="
+      //pars = "field=organisationNoRole&q="
+      section = "organisationNoRole";
     }
 
   } else {
@@ -1634,13 +1638,15 @@ function updateContactsGeodata() {
     Element.show('spinner-individual');
 
     if ($("contact-role").value) {
-      pars = "field=individualRole&q="+$('contact-role').value; //+"|"
+      //pars = "field=individualRole&q="+$('contact-role').value+"|"
+      section = "individualRole";
 
     } else {
-      pars = "field=individualNoRole&q="
+      //pars = "field=individualNoRole&q="
+      section = "individualNoRole";
     }
   }
-
+  pars = "";
   var myAjax = new Ajax.Request(
     getGNServiceURL('main.search.suggest.contacts'),
     {
@@ -1672,8 +1678,17 @@ function updateContactsGeodata() {
 
         // Fill organisations with JSON response
         select.options[select.options.length] = new Option("", "");
-        for(var i = 0; i< json.data.length; i++) {
-          select.options[select.options.length] = new Option(json.data[i].label, json.data[i].value);
+        for(var i = 0; i< json.data[section].length; i++) {
+          var optionLabel = json.data[section][i].label;
+          var optionValue = json.data[section][i].value;
+
+          if (role !== "") {
+            if (optionValue.substring(0, role.length) === role) {
+              select.options[select.options.length] = new Option(optionLabel, optionValue);
+            }
+          } else {
+            select.options[select.options.length] = new Option(optionLabel, optionValue);
+          }
         }
       },
 

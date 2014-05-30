@@ -26,6 +26,11 @@
 			<item name="type" plural="types" indexKey="type" translator="codelist:gmd:MD_ScopeCode"/>
 			<item name="createDateYear" plural="createDateYears" indexKey="createDateYear"
 				sortBy="value" sortOrder="desc" max="40"/>
+
+      <item name="organisationRole" plural="organisationRoles" indexKey="organisationRole"/>
+      <item name="organisationNoRole" plural="organisationNoRoles" indexKey="organisationNoRole"/>
+      <item name="individualRole" plural="individualRoles" indexKey="individualRole"/>
+      <item name="individualNoRole" plural="individualNoRoles" indexKey="individualNoRole"/>
 		</hits>
 		<titles>
 			<item name="title" plural="titles" indexKey="title" sortBy="freq" sortOrder="desc" max="100"

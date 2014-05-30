@@ -18,32 +18,48 @@
       }
   -->
   <xsl:template match="/">
+
     {"data":
-    [
-    <xsl:choose>
-      <xsl:when test="ends-with(/root/request/field, 'NoRole')">
-        <xsl:call-template name="itemsWithoutRole" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="itemsWithRole" />
-      </xsl:otherwise>
+      {"organisationRole": [
+        <xsl:call-template name="itemsWithRole">
+          <xsl:with-param name="field" select="'organisationRole'" />
+        </xsl:call-template>
+      ],
 
-    </xsl:choose>
-    ]}
+      "organisationNoRole": [
+        <xsl:call-template name="itemsWithoutRole">
+          <xsl:with-param name="field" select="'organisationNoRole'" />
+        </xsl:call-template>
+      ],
 
+      "individualRole": [
+        <xsl:call-template name="itemsWithRole">
+          <xsl:with-param name="field" select="'individualRole'" />
+        </xsl:call-template>
+      ],
+
+      "individualNoRole": [
+        <xsl:call-template name="itemsWithoutRole">
+          <xsl:with-param name="field" select="'individualNoRole'" />
+        </xsl:call-template>
+      ]}
+    }
   </xsl:template>
   
   
   <xsl:template name="itemsWithRole">
+    <xsl:param name="field"/>
+    <xsl:param name="fieldPlural" select="concat($field, 's')"/>
+
     <xsl:variable name="query" select="/root/request/q" />
     <xsl:variable name="roleCodelist" select="/root/gui/schemas/iso19139/codelists/codelist[@name='gmd:CI_RoleCode']" />
 
-    <xsl:for-each select="/root/items/item">
-      <xsl:sort select="tokenize(@term, '\|')[2]" />
+    <xsl:for-each select="/root/response/summary/*[name()=$fieldPlural]/*[name()=$field]">
+      <xsl:sort select="tokenize(@name, '\|')[2]" />
 
       <xsl:variable name="value">
         <xsl:call-template name="replaceString">
-          <xsl:with-param name="expr"        select="@term"/>
+          <xsl:with-param name="expr"        select="@name"/>
           <xsl:with-param name="pattern"     select="'&quot;'"/>
           <xsl:with-param name="replacement" select="'\&quot;'"/>
         </xsl:call-template>
@@ -72,12 +88,15 @@
 
 
   <xsl:template name="itemsWithoutRole">
-    <xsl:for-each select="/root/items/item">
-      <xsl:sort select="@term" />
+    <xsl:param name="field"/>
+    <xsl:param name="fieldPlural" select="concat($field, 's')"/>
+
+    <xsl:for-each select="/root/response/summary/*[name()=$fieldPlural]/*[name()=$field]">
+      <xsl:sort select="@name" />
 
       <xsl:variable name="value">
         <xsl:call-template name="replaceString">
-          <xsl:with-param name="expr"        select="@term"/>
+          <xsl:with-param name="expr"        select="@name"/>
           <xsl:with-param name="pattern"     select="'&quot;'"/>
           <xsl:with-param name="replacement" select="'\&quot;'"/>
         </xsl:call-template>

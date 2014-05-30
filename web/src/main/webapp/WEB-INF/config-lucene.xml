@@ -200,18 +200,11 @@
     <Field name="_groupPublished" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
     <Field name="_source" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
 
-    <!-- For field suggestions -->
-    <Field name="organisationRole" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
-    <Field name="organisationNoRole" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
-    <Field name="individualRole" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
-    <Field name="individualNoRole" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
+    <Field name="organisationRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
+    <Field name="organisationNoRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
 
-    <!-- For contacts filters (search) -->
-    <Field name="organisationRoleSearch" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
-    <Field name="organisationNoRoleSearch" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
-    <Field name="individualRoleSearch" analyzer="org.fao.geonet.kernel.search.KeywordAnalyzer"/>
-    <Field name="individualNoRoleSearch" analyzer="org.fao.geonet.kernel.search.KeywordAnalyzer"/>
-
+    <Field name="individualRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
+    <Field name="individualNoRole" analyzer="org.apache.lucene.analysis.core.KeywordAnalyzer"/>
   </fieldSpecificAnalyzer>
   
   <fieldSpecificSearchAnalyzer>
@@ -293,16 +286,6 @@
     <Field name="specificationTitle"/>
     <Field name="levelName"/>
     <Field name="subject"/>
-
-    <Field name="organisationRole"/>
-    <Field name="organisationNoRole"/>
-    <Field name="individualRole"/>
-    <Field name="individualNoRole"/>
-
-    <Field name="organisationRoleSearch"/>
-    <Field name="organisationNoRoleSearch"/>
-    <Field name="individualRoleSearch"/>
-    <Field name="individualNoRoleSearch"/>
   </tokenized>
 
   <!-- All Lucene numeric fields.

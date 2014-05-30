@@ -264,24 +264,15 @@
 				<xsl:variable name="logo" select="../..//gmx:FileName/@src"/>
 			
 				<Field name="responsibleParty" string="{concat($role, '|resource|', ., '|', $logo, '|', $email)}" store="true" index="false"/>
-
-        <!-- For suggestions -->
         <Field name="organisationRole" string="{concat($role, '|', .)}" store="true" index="true"/>
         <Field name="organisationNoRole" string="{string(.)}" store="true" index="true"/>
-        <!-- For searches -->
-        <Field name="organisationRoleSearch" string="{concat($role, '|', .)}" store="true" index="true"/>
-        <Field name="organisationNoRoleSearch" string="{string(.)}" store="true" index="true"/>
 			</xsl:for-each>
 
       <xsl:for-each select="gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:individualName/gco:CharacterString">
         <xsl:variable name="role" select="../../gmd:role/*/@codeListValue"/>
 
-        <!-- For suggestions -->
         <Field name="individualRole" string="{concat($role, '|', .)}" store="true" index="true"/>
         <Field name="individualNoRole" string="{string(.)}" store="true" index="true"/>
-        <!-- For searches -->
-        <Field name="individualRoleSearch" string="{concat($role, '|', .)}" store="true" index="true"/>
-        <Field name="individualNoRoleSearch" string="{string(.)}" store="true" index="true"/>
       </xsl:for-each>
 
 			<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->		
