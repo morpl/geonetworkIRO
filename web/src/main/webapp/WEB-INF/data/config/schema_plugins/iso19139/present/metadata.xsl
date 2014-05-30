@@ -3524,7 +3524,7 @@
       </datelastreporting>
     </xsl:if>
 
-    <xsl:for-each select="gmd:pointOfContact/*[gmd:role/gmd:CI_RoleCode/@codeListValue='primaryResponsibility' or gmd:role/gmd:CI_RoleCode/@codeListValue='partlyResponsibility']">
+    <xsl:for-each select="gmd:pointOfContact/*">
       <xsl:variable name="role" select="gmd:role/gmd:CI_RoleCode/@codeListValue"/>
 
         <responsibleOrganisation role="{$role}">

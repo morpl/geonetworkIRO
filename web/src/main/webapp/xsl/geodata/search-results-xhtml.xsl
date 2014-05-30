@@ -1005,12 +1005,12 @@
               <xsl:when test="$type = 'iro'">
                 <!-- Responsible - Organisation -->
                 <td>
-                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/organisationName|$metadata/responsibleParty[@role='partlyResponsibility']/organisationName" />
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/organisationName|$metadata/responsibleOrganisation[@role='partlyResponsibility']/organisationName" />
                 </td>
 
                 <!-- Responsible - Person -->
                 <td>
-                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/individualName|$metadata/responsibleParty[@role='partlyResponsibility']/individualName" />
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/individualName|$metadata/responsibleOrganisation[@role='partlyResponsibility']/individualName" />
                 </td>
                 <td><xsl:value-of select="$metadata/datelastreporting" /></td>
                 <td><xsl:value-of select="$metadata/datenextreporting" /></td>
@@ -1020,12 +1020,12 @@
               <xsl:otherwise>
                 <!-- Responsible - Organisation -->
                 <td>
-                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/organisationName|$metadata/responsibleParty[@role='partlyResponsibility']/organisationName|$metadata/responsibleParty/organisationName" />
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/organisationName|$metadata/responsibleOrganisation[@role='partlyResponsibility']/organisationName|$metadata/responsibleOrganisation/organisationName" />
                 </td>
 
                 <!-- Responsible - Person -->
                 <td>
-                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/individualName|$metadata/responsibleParty[@role='partlyResponsibility']/individualName|$metadata/responsibleParty/individualName" />
+                  <xsl:value-of select="$metadata/responsibleOrganisation[@role='primaryResponsibility']/individualName|$metadata/responsibleOrganisation[@role='partlyResponsibility']/individualName|$metadata/responsibleOrganisation/individualName" />
                 </td>
                 <td><xsl:value-of select="$metadata/abstract" /></td>
                 <td><xsl:value-of select="$metadata/keywords" /></td>
