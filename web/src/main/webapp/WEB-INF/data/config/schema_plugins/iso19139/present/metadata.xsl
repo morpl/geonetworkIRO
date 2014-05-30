@@ -3316,7 +3316,7 @@
 		</metadatacreationdate>
 
     <!-- Geodata -->
-    <datenextreporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:dateOfNextUpdate/*" /></datenextreporting>
+    <datenextreporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate/*" /></datenextreporting>
     <maintenancenote><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString" /></maintenancenote>
     <!-- End geodata -->
 
