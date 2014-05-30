@@ -459,9 +459,9 @@
         <select id="organisation" title="Select the organisation" style="width:250px"></select>
         <img id="spinner-organisation" src="{/root/gui/url}/images/spinner.gif" width="22" height="22"/>
 
-        <input type="hidden" name="organisationRole" id="organisationRole" value="" />
+        <input type="hidden" name="organisationRoleSearch" id="organisationRoleSearch" value="" />
 
-        <input type="hidden" name="organisationNoRole" id="organisationNoRole" value="" />
+        <input type="hidden" name="organisationNoRoleSearch" id="organisationNoRoleSearch" value="" />
       </div>
 
       <!-- Individual name -->
@@ -471,9 +471,9 @@
         <select id="individual" title="Select the person" style="width:250px"></select>
         <img id="spinner-individual" src="{/root/gui/url}/images/spinner.gif" width="22" height="22"/>
 
-        <input type="hidden" name="individualRole" id="individualRole" value="" />
+        <input type="hidden" name="individualRoleSearch" id="individualRoleSearch" value="" />
 
-        <input type="hidden" name="individualNoRole" id="individualNoRole" value="" />
+        <input type="hidden" name="individualNoRoleSearch" id="individualNoRoleSearch" value="" />
       </div>
     </div>
   </div>

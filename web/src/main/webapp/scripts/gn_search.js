@@ -1417,25 +1417,27 @@ function runAdvancedGeoDataSearch(type){
 
   if ($('responsibleDepartment').checked) {
     if ($("contact-role").value) {
-      $("organisationRole").value = $("organisation").value;
-      $("organisationNoRole").value = '';
+      $("organisationRoleSearch").value = $("organisation").value;
+      $("organisationNoRoleSearch").value = '';
 
     } else {
-      $("organisationRole").value = '';
-      $("organisationNoRole").value = $("organisation").value;
+      $("organisationRoleSearch").value = '';
+      $("organisationNoRoleSearch").value = $("organisation").value;
     }
 
-    $("individualRole").value = '';
+    $("individualRoleSearch").value = '';
+    $("individualNoRoleSearch").value = '';
   } else {
     if ($("contact-role").value) {
-      $("individualRole").value = $("individual").value;
-      $("individualNoRole").value = '';
+      $("individualRoleSearch").value = $("individual").value;
+      $("individualNoRoleSearch").value = '';
 
     } else {
-      $("individualRole").value = '';
-      $("individualNoRole").value = $("individual").value;
+      $("individualRoleSearch").value = '';
+      $("individualNoRoleSearch").value = $("individual").value;
     }
-    $("organisationRole").value = '';
+    $("organisationRoleSearch").value = '';
+    ("organisationNoRoleSearch").value = '';
   }
 
   var pars = $('advanced_geodata_search_form').serialize(true);
@@ -1619,7 +1621,7 @@ function updateContactsGeodata() {
     Element.show('spinner-organisation');
 
     if ($("contact-role").value) {
-      pars = "field=organisationRole&q="+$('contact-role').value+"|"
+      pars = "field=organisationRole&q="+$('contact-role').value; //+"|"
 
     } else {
       pars = "field=organisationNoRole&q="
@@ -1632,7 +1634,7 @@ function updateContactsGeodata() {
     Element.show('spinner-individual');
 
     if ($("contact-role").value) {
-      pars = "field=individualRole&q="+$('contact-role').value+"|"
+      pars = "field=individualRole&q="+$('contact-role').value; //+"|"
 
     } else {
       pars = "field=individualNoRole&q="
