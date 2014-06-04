@@ -1091,6 +1091,32 @@
 			<description></description>
 		</entry>
 		-->
+	<!--NST IRO Maintenance and update frequency -->
+	<entry>
+		<code>every24Months</code>
+		<label>Every 24 months (NST IRO)</label>
+		<description>Data is updated every two years (NST IRO)</description>
+	</entry>
+	<entry>
+		<code>every36Months</code>
+		<label>Every 36 months (NST IRO)</label>
+		<description>Data is updated every three years (NST IRO)</description>
+	</entry>                                        
+	<entry>
+		<code>every48Months</code>
+		<label>Every 48 months (NST IRO)</label>
+		<description>Data is updated every four years (NST IRO)</description>
+	</entry>                                        
+	<entry>
+		<code>every60Months</code>
+		<label>Every 60 months (NST IRO)</label>
+		<description>Data is updated every five years (NST IRO)</description>
+	</entry>                                        
+	<entry>
+		<code>every72Months</code>
+		<label>Every 72 months (NST IRO)</label>
+		<description>Data is updated every six years (NST IRO)</description>
+	</entry>
 	</codelist>
 	<!-- ==================================================== -->
 	<codelist name="gmd:MD_MediumFormatCode">
@@ -1370,6 +1396,22 @@
 			<description>Data is currently in the process of being created</description>
 		</entry>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<!-- NST IRO ProgressCodes -->
+		<entry>
+			<code>voluntary</code>
+			<label>Voluntary (NST IRO)</label>
+			<description>The reporting obligation of the data is voluntary (NST IRO)</description>
+		</entry>
+		<entry>
+			<code>expected</code>
+			<label>Expected (NST IRO)</label>
+			<description>The reporting obligation of the data is expected (NST IRO)</description>
+		</entry>
+		<entry>
+			<code>mandatory</code>
+			<label>Mandatory (NST IRO)</label>
+			<description>The reporting obligation of the data is mandatory (NST IRO)</description>
+		</entry>
 	</codelist>
 	<!-- ==================================================== -->
 	<codelist name="gmd:MD_RestrictionCode">
