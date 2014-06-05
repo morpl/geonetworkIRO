@@ -27,10 +27,10 @@
 			<item name="createDateYear" plural="createDateYears" indexKey="createDateYear"
 				sortBy="value" sortOrder="desc" max="40"/>
 
-      <item name="organisationRole" plural="organisationRoles" indexKey="organisationRole"/>
-      <item name="organisationNoRole" plural="organisationNoRoles" indexKey="organisationNoRole"/>
-      <item name="individualRole" plural="individualRoles" indexKey="individualRole"/>
-      <item name="individualNoRole" plural="individualNoRoles" indexKey="individualNoRole"/>
+      <item name="organisationRole" plural="organisationRoles" indexKey="organisationRole" max="1000"/>
+      <item name="organisationNoRole" plural="organisationNoRoles" indexKey="organisationNoRole" max="1000"/>
+      <item name="individualRole" plural="individualRoles" indexKey="individualRole" max="1000"/>
+      <item name="individualNoRole" plural="individualNoRoles" indexKey="individualNoRole" max="1000"/>
 		</hits>
 		<titles>
 			<item name="title" plural="titles" indexKey="title" sortBy="freq" sortOrder="desc" max="100"

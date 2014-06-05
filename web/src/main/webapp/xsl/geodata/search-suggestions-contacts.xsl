@@ -59,7 +59,7 @@
 
       <xsl:variable name="value">
         <xsl:call-template name="replaceString">
-          <xsl:with-param name="expr"        select="@name"/>
+          <xsl:with-param name="expr"        select="normalize-space(@name)"/>
           <xsl:with-param name="pattern"     select="'&quot;'"/>
           <xsl:with-param name="replacement" select="'\&quot;'"/>
         </xsl:call-template>
@@ -96,7 +96,7 @@
 
       <xsl:variable name="value">
         <xsl:call-template name="replaceString">
-          <xsl:with-param name="expr"        select="@name"/>
+          <xsl:with-param name="expr"        select="normalize-space(@name)"/>
           <xsl:with-param name="pattern"     select="'&quot;'"/>
           <xsl:with-param name="replacement" select="'\&quot;'"/>
         </xsl:call-template>
