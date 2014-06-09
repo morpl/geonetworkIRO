@@ -39,6 +39,7 @@
 	<xsl:strip-space elements="*"/>
 
   <xsl:variable name="server" select="concat(//server/protocol, '://', //server/host,':', //server/port)" />
+  <xsl:variable name="urlPath" select="/root/gui/url" />
 
   <!-- Field separator:
     To use tab instead of semicolon, use "&#009;".
@@ -180,7 +181,7 @@
 			<xsl:text>"</xsl:text><xsl:value-of select="$sep"/>
 		</xsl:for-each>
 
-    <xsl:value-of select="concat('=HYPERLINK(', '&quot;', $server, '/geonetwork?uuid=', geonet:info/uuid, '&quot;)')"/>
+    <xsl:value-of select="concat('=HYPERLINK(', '&quot;', $server, $urlPath, '?uuid=', geonet:info/uuid, '&quot;)')"/>
 
     <xsl:value-of select="concat($sep,'&quot;', $metadata/geonet:info/uuid, '&quot;', $sep,
 									'&quot;', $metadata/geonet:info/id, '&quot;')"/>
