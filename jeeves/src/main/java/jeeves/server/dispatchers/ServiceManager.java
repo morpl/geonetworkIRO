@@ -38,10 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import jeeves.config.springutil.JeevesApplicationContext;
 import jeeves.constants.ConfigFile;
 import jeeves.constants.Jeeves;
-import jeeves.exceptions.JeevesException;
-import jeeves.exceptions.NotAllowedEx;
-import jeeves.exceptions.ServiceNotFoundEx;
-import jeeves.exceptions.ServiceNotMatchedEx;
+import jeeves.exceptions.*;
 import jeeves.interfaces.Service;
 import jeeves.monitor.MonitorManager;
 import jeeves.monitor.timer.ServiceManagerGuiServicesTimer;
@@ -485,8 +482,10 @@ public class ServiceManager
 		}
 		catch(Throwable e)
 		{
-			if(e instanceof NotAllowedEx) {
-				throw (NotAllowedEx)e;
+            if (e instanceof OperationNotAllowedEx) {
+                handleError(req, response, context, srvInfo, e);
+            } else if(e instanceof NotAllowedEx) {
+			    throw (NotAllowedEx)e;
 			} else {
 				handleError(req, response, context, srvInfo, e);
 			}
