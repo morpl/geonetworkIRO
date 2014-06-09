@@ -263,14 +263,6 @@
                             </xsl:call-template>
 
                             <xsl:call-template name="info-rows">
-                              <xsl:with-param name="label" select="$gui/strings/uuid"/>
-                              <xsl:with-param name="value" select="$metadata/geonet:info/uuid"/>
-                            </xsl:call-template>
-
-
-
-
-                            <xsl:call-template name="info-rows">
                               <xsl:with-param name="label" select="$columnTranslations/*[name() = $metadata/geonet:info/schema]/MIM_ResponsibleOrganisation"/>
                               <xsl:with-param name="value" select="$metadata/MIM_ResponsibleOrganisation"/>
                             </xsl:call-template>
@@ -316,6 +308,11 @@
                               <xsl:with-param name="gui" select="$gui"/>
                               <xsl:with-param name="server" select="$server"/>
                               <xsl:with-param name="metadata" select="$metadata"/>
+                            </xsl:call-template>
+
+                            <xsl:call-template name="info-rows">
+                              <xsl:with-param name="label" select="$gui/strings/uuid"/>
+                              <xsl:with-param name="value" select="$metadata/geonet:info/uuid"/>
                             </xsl:call-template>
 
                           </fo:table-body>
