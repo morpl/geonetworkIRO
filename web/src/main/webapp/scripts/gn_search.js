@@ -34,7 +34,7 @@ function runCsvSearch() {
 	}
     //window.open(serviceUrl, 'csv')
     location.replace (serviceUrl);
-    metadataselect(0, 'remove-all');
+    //metadataselect(0, 'remove-all');
 }
 
 
