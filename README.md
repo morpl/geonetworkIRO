@@ -1,5 +1,7 @@
 # GeoNetwork customizations to manage International Reporting Obligations
 
+This repository contains a GeoNetwork opensource version based on [2.10.2 tag] (https://github.com/geonetwork/core-geonetwork/tree/2.10.2) with customizations to manage International Reporting Obligations.
+
 ## Database configuration
 
 The database connection should be configured in the file `web/src/main/webapp/WEB-INF/config-overrides-geodata-props.xml`
