@@ -1707,7 +1707,7 @@ function updateOptionsField(value, field) {
   $(field).value = value;
   $(field + '_geodata').value = value;
 
-  if (sortBy == 'sortBy') {
+  if (field == 'sortBy') {
     if (value=='title') {
       $('sortOrder').value = 'reverse';
       $('sortOrder_simple').value = 'reverse';
