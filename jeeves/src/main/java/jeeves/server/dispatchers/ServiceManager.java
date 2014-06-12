@@ -898,9 +898,14 @@ public class ServiceManager
 
 	private Element getError(ServiceRequest req, Throwable t, Element response)
 	{
+
 		Element params = new Element(Jeeves.Elem.REQUEST)
 								.addContent(new Element("language").setText(req.getLanguage()))
 								.addContent(new Element("service") .setText(req.getService()));
+
+        if (req.getParams() != null) {
+            params.addContent(req.getParams().cloneContent());
+        }
 
 		Element error = JeevesException.toElement(t)
 								.addContent(params);

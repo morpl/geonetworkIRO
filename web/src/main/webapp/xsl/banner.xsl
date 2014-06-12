@@ -175,13 +175,24 @@
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:variable name="paramString">
-                                        <xsl:if test="/root/request/*">
+                                      <xsl:choose>
+                                        <xsl:when test="/root/request/*">
+                                          <xsl:if test="/root/request/*">
                                             <xsl:text>?</xsl:text>
                                             <xsl:for-each select="/root/request/*">
-                                                <xsl:if test="preceding-sibling::*"><xsl:text>&amp;</xsl:text></xsl:if>
-                                                <xsl:value-of select="name(.)"/><xsl:text>=</xsl:text><xsl:value-of select="."/>
+                                              <xsl:if test="preceding-sibling::*"><xsl:text>&amp;</xsl:text></xsl:if>
+                                              <xsl:value-of select="name(.)"/><xsl:text>=</xsl:text><xsl:value-of select="."/>
                                             </xsl:for-each>
-                                        </xsl:if>
+                                          </xsl:if>
+                                        </xsl:when>
+                                        <xsl:when test="/root/error/request/*[name() != 'language' and name() != 'service']">
+                                          <xsl:text>?</xsl:text>
+                                          <xsl:for-each select="/root/error/request/*[name() != 'language' and name() != 'service']">
+                                            <xsl:if test="preceding-sibling::*[name() != 'language' and name() != 'service']"><xsl:text>&amp;</xsl:text></xsl:if>
+                                            <xsl:value-of select="name(.)"/><xsl:text>=</xsl:text><xsl:value-of select="."/>
+                                          </xsl:for-each>
+                                        </xsl:when>
+                                      </xsl:choose>
                                     </xsl:variable>
 
                                     <form name="login" action="{/root/gui/url}/j_spring_security_check?redirectUrl=/srv/{/root/gui/language}/{/root/gui/reqService}{$paramString}" method="post">
