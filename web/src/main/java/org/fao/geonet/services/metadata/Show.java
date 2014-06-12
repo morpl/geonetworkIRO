@@ -23,6 +23,7 @@
 
 package org.fao.geonet.services.metadata;
 
+import jeeves.exceptions.OperationNotAllowedEx;
 import jeeves.interfaces.Service;
 import jeeves.resources.dbms.Dbms;
 import jeeves.server.ServiceConfig;
@@ -44,6 +45,7 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 
 import jeeves.utils.Xml;
+import org.springframework.security.access.AccessDeniedException;
 
 //=============================================================================
 
@@ -113,10 +115,19 @@ public class Show implements Service
 		}
 		if (id == null)
 			throw new MetadataNotFoundEx("Metadata not found.");
-		
-		Lib.resource.checkPrivilege(context, id, AccessManager.OPER_VIEW);
 
-		//-----------------------------------------------------------------------
+        try {
+            /* checkPrivilege uses denyAccess that depending on user logged or not throws a different exception:
+                  AccessDeniedException for logged users
+                  OperationNotAllowedEx for no logged users
+               In this case seem more consistent to throw AccessDeniedException always
+            */
+            Lib.resource.checkPrivilege(context, id, AccessManager.OPER_VIEW);
+        } catch (OperationNotAllowedEx ex) {
+            throw new AccessDeniedException("User is not permitted to access this resource");
+        }
+
+        //-----------------------------------------------------------------------
 		//--- get metadata
 		
 		Element elMd;

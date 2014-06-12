@@ -26,6 +26,17 @@
     <!-- Use custom main page with geodata tab -->
     <replaceAtt xpath="services/service[@name='main.home']/output" attName="sheet" value="geodata/main-page.xsl" />
 
+    <removeXML xpath="services/service[@name='xml.metadata.get']" />
+    <addXML xpath="services">
+      <service name="xml.metadata.get">
+        <class name=".services.metadata.Show">
+          <param name="skipPopularity" value="y" />
+          <param name="skipInfo" value="y" />
+        </class>
+
+        <error sheet="error-with-login.xsl" />
+      </service>
+    </addXML>
 
     <addXML xpath="services">
 
