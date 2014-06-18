@@ -1420,6 +1420,9 @@
   </csvExportColumns>
 
   <geodata>
+    <IROMetadata>IRO Metadata</IROMetadata>
+    <DatasetMetadata>Dataset metadata</DatasetMetadata>
+    <ServiceMetadata>Service Metadata</ServiceMetadata>
     <searchResultsHeaders>
       <title>Title</title>
       <responsibleOrganisation>Responsible - Organisation</responsibleOrganisation>

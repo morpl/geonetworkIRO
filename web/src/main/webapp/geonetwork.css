@@ -1476,3 +1476,16 @@ div.hittitle {
     margin-left: 0px;
 }
 
+div.owner{
+    font-style: italic;
+    padding:.4em 0 .4em 22px;
+    margin:4 0 0 0;
+    background: url('images/owner_small.png') no-repeat left center;
+}
+
+div.notowner{
+    font-style: italic;
+    padding:.4em 0 .4em 22px;
+    margin:4 0 0 0;
+    background: url('images/notowner_small.png') no-repeat left center;
+}
