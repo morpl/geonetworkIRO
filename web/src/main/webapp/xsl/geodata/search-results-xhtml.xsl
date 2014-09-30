@@ -702,7 +702,7 @@
                 <img src="{/root/gui/url}/images/spinner.gif"  title="{/root/gui/strings/show}" />
               </span>
 
-              <!-- some ownership info -->
+              <!-- some ownership info and published info -->
               <xsl:if test="$remote=false() and $metadata/geonet:info/isHarvested = 'n' and /root/gui/session/userId!=''">
                   <div>
                     <xsl:choose>
@@ -717,6 +717,17 @@
                     </xsl:choose>
                     <xsl:value-of select="$metadata/geonet:info/ownername"/>
                   </div>
+                  <!-- published info: except for IRO metadata -->
+                  <xsl:if test="$type != 'iro'">
+                  <xsl:choose>
+                    <xsl:when test="$metadata/geonet:info/isPublishedToAll='true'">
+                      <div><img src="{/root/gui/url}/images/published.png" alt="{/root/gui/strings/geodata/published}" title="{/root/gui/strings/geodata/published}" width="20" height="20" /></div>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <div><img src="{/root/gui/url}/images/nopublished.png" alt="{/root/gui/strings/geodata/nopublished}" title="{/root/gui/strings/geodata/nopublished}" width="20" height="20" /></div>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                  </xsl:if>
               </xsl:if>
             </td>
           </tr>

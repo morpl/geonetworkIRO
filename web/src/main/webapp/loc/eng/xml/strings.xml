@@ -1453,5 +1453,8 @@
       <metadataDateType>Type</metadataDateType>
       <IRODeadline>IRO deadline</IRODeadline>
     </searchPanel>
+
+    <published>Published metadata</published>
+    <nopublished>No published metadata</nopublished>
   </geodata>
 </strings>
