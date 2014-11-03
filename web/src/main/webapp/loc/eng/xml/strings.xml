@@ -291,8 +291,9 @@
 	<mdTitle js="true">Metadata title</mdTitle>
 	<createRelation js="true">Create relation</createRelation>
 	<export>Export (ZIP)</export>
-	<exportText>Export (TXT)</exportText>	
-	<addXMLFragment>Add from dictionary ...</addXMLFragment>
+	<exportText>Export MD (TXT)</exportText>
+    <exportIROText>Export IRO (TXT)</exportIROText>
+    <addXMLFragment>Add from dictionary ...</addXMLFragment>
 	<translateWithGoogle>Use Google translation service to suggest a translation for selected language.</translateWithGoogle>
 	<translateWithGoogle.maxSize js="true">Text to translate is larger than 5000 characters (see http://code.google.com/apis/ajaxlanguage/terms.html).</translateWithGoogle.maxSize>
 	<translateWithGoogle.emptyInput js="true">Main language input is empty. Add the main language value before using the translation service.</translateWithGoogle.emptyInput>
@@ -1402,9 +1403,8 @@
 	<tag_label>Tags</tag_label>
 	<map_label>Map</map_label>
 
-  <csvExportColumns>
-    <uuid>Metadata UUID</uuid>
-    <id>Metadata ID</id>
+  <csvIROExportColumns>
+    <uuid>Metadata - File identifier</uuid>
     <link>Link to metadata</link>
 
     <iso19139>
@@ -1417,9 +1417,42 @@
       <MetadataMaintenanceNote>Metadata maintenance note</MetadataMaintenanceNote>
       <DateLastUpdate>Date last update</DateLastUpdate>
     </iso19139>
+  </csvIROExportColumns>
+
+  <csvExportColumns>
+    <uuid>METADATA - File identifier</uuid>
+    <link>Link to metadata</link>
+
+    <iso19139>
+      <Title>Metadata Title</Title>
+      <Edition>Edition</Edition>
+      <UniqueResourceIdentifier>Unique Resource Identifier</UniqueResourceIdentifier>
+      <Codespace>Codespace</Codespace>
+      <IndividualNameResp>RESPONSIBLE - Individual Name</IndividualNameResp>
+      <OrganisationNameResp>RESPONSIBLE - Organisation name</OrganisationNameResp>
+      <PositionNameResp>RESPONSIBLE - Position name</PositionNameResp>
+      <RoleResp>RESPONSIBLE - Role</RoleResp>
+      <MaintenanceUpdateFrequency>Maintenance and Update Frequency</MaintenanceUpdateFrequency>
+      <DescriptiveKeyword>Keywords</DescriptiveKeyword>
+      <UseLimitation>Use Limitation</UseLimitation>
+      <OtherConstraints>Other Constraints</OtherConstraints>
+      <TemporalExtent>Temporal Extent</TemporalExtent>
+      <SupplementalInformation>Supplemental Information</SupplementalInformation>
+      <FormatDI>DISTRIBUTION INFO - Format</FormatDI>
+      <TransferOptionsDI>DISTRIBUTION INFO - Transfer options</TransferOptionsDI>
+      <GeometricObjectTypeSRI>SPATIAL REPRESENTATION INFO - Geometric object type</GeometricObjectTypeSRI>
+      <HierarchyLevelDQI>DATA QUALITY INFO - Hierarchy Level</HierarchyLevelDQI>
+      <MaintenanceUpdateFrequencyMetadata>METADATA - Maintenance and update frequency</MaintenanceUpdateFrequencyMetadata>
+      <MaintenanceNoteMetadata>METADATA - Maintenance note</MaintenanceNoteMetadata>
+      <IndividualNameMetadata>METADATA - Individual Name</IndividualNameMetadata>
+      <OrganisationNameMetadata>METADATA - Organisation Name</OrganisationNameMetadata>
+      <RoleMetadata>METADATA - Role</RoleMetadata>
+      <DateMetadata>METADATA - Date</DateMetadata>
+    </iso19139>
   </csvExportColumns>
 
-  <geodata>
+
+    <geodata>
     <IROMetadata>IRO Metadata</IROMetadata>
     <DatasetMetadata>Dataset metadata</DatasetMetadata>
     <ServiceMetadata>Service Metadata</ServiceMetadata>

@@ -50,6 +50,22 @@
 
         <output sheet="geodata/search-suggestions-contacts.xsl" contentType="application/json; charset=UTF-8" />
       </service>
+
+      <service name="export_iro.csv">
+        <class name=".services.main.SelectionSearch">
+            <param name="fast" value="false" />
+        </class>
+
+        <output forward="csv.present.iro" />
+      </service>
+
+      <service name="csv.present.iro">
+          <class name=".services.main.Result">
+              <param name="range" value="all" />
+          </class>
+          <output sheet="geodata/csv-search-iro.xsl" contentType="text/x-csv; charset=UTF-8" />
+      </service>
+
     </addXML>
 
     <!-- Set content type to csv and use custom xsl -->

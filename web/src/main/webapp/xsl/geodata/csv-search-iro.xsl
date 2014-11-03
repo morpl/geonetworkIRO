@@ -57,10 +57,11 @@
 				
 				<!-- Try to apply csv mode template to current metadata record -->
 				<xsl:variable name="mdcsv">
-					<xsl:apply-templates mode="csv" select=".">
+					<xsl:apply-templates mode="csv-iro" select=".">
 						<xsl:with-param name="internalSep" select="$internalSep"/>
 					</xsl:apply-templates>
 				</xsl:variable>
+				
 				<!-- If not define just use the brief format -->
 				<xsl:variable name="md">
 					<xsl:choose>
@@ -77,7 +78,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 
-    <xsl:variable name="columnTranslations" select="/root/gui/strings/csvExportColumns" />
+    <xsl:variable name="columnTranslations" select="/root/gui/strings/csvIROExportColumns" />
 
 		<xsl:variable name="columns">
 			<xsl:for-each-group select="$sortedResults/*" group-by="geonet:info/schema">
@@ -101,6 +102,8 @@
 			</xsl:for-each-group>
 		</xsl:variable>
 
+    <!--<xsl:message>columns: <xsl:value-of select="$columns" /></xsl:message>-->
+
 		<!-- Display results
 				* header first (once)
 				* content then.
@@ -123,7 +126,6 @@
           <xsl:value-of select="concat('&quot;', $columnTranslations/link, '&quot;')" />
 
 
-
 					<xsl:call-template name="newLine"/>
         </xsl:otherwise>
       </xsl:choose>
@@ -135,5 +137,6 @@
 </xsl:for-each>
 
 </xsl:template>
+
 
 </xsl:stylesheet>

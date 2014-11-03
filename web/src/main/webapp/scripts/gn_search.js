@@ -27,16 +27,26 @@ function gn_anyKeyObserver(e)
 		runSimpleSearch();
 }
 
-function runCsvSearch() {
-    var serviceUrl = getGNServiceURL('export.csv');
+function runCsvSearchIRO() {
+    var serviceUrl = getGNServiceURL('export_iro.csv');
     if ($("advanced_search_pnl").visible()) {
         serviceUrl = serviceUrl + "?" + fetchParam('template');
-	}
+    }
     //window.open(serviceUrl, 'csv')
     location.replace (serviceUrl);
     //metadataselect(0, 'remove-all');
 }
 
+
+function runCsvSearch() {
+  var serviceUrl = getGNServiceURL('export.csv');
+  if ($("advanced_search_pnl").visible()) {
+    serviceUrl = serviceUrl + "?" + fetchParam('template');
+  }
+  //window.open(serviceUrl, 'csv')
+  location.replace (serviceUrl);
+  //metadataselect(0, 'remove-all');
+}
 
 /**
  * Trigger PDF search.

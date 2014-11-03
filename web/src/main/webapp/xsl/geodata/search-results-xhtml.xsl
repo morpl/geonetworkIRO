@@ -177,6 +177,7 @@
 							<button onclick="gn_filteredSearch()"><xsl:value-of select="/root/gui/strings/selectedOnly"/></button>
 							<button onclick="runPdfSearch(true);" alt="{/root/gui/strings/savepdf}" title="{/root/gui/strings/savepdf}"><xsl:value-of select="/root/gui/strings/printSelection"/></button>
 							<button onclick="load('{/root/gui/locService}/mef.export?uuid=&amp;format=full&amp;version=2')"><xsl:value-of select="/root/gui/strings/export"/></button>
+                            <button onclick="runCsvSearchIRO()"><xsl:value-of select="/root/gui/strings/exportIROText"/></button>
                             <button onclick="runCsvSearch()"><xsl:value-of select="/root/gui/strings/exportText"/></button>
 						</div>
 					 </xsl:if>

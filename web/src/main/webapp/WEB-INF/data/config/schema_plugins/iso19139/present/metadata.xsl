@@ -4411,57 +4411,228 @@
     <xsl:param name="internalSep"/>
 
     <metadata>
-      <xsl:copy-of select="geonet:info"/>
+        <xsl:copy-of select="geonet:info"/>
 
-      <!-- Title -->
-      <Title><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString|gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/></Title>
+        <!-- Title -->
+        <Title><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/></Title>
+
+        <!-- Edition -->
+        <Edition><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:edition/gco:CharacterString"/></Edition>
+
+        <!-- Unique resource identifier -->
+        <UniqueResourceIdentifier><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:code/gco:CharacterString"/></UniqueResourceIdentifier>
+
+        <!-- Codespace -->
+        <Codespace><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString"/></Codespace>
+
+        <xsl:choose>
+          <xsl:when test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty">
+            <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty">
+              <!-- RESPONSIBLE - Individual name -->
+              <IndividualNameResp><xsl:value-of select="gmd:individualName/gco:CharacterString"/></IndividualNameResp>
+
+              <!-- RESPONSIBLE - Organisation name -->
+              <OrganisationNameResp><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></OrganisationNameResp>
+
+              <!-- RESPONSIBLE - Position name -->
+              <PositionNameResp><xsl:value-of select="gmd:positionName/gco:CharacterString"/></PositionNameResp>
+
+              <!-- RESPONSIBLE - Role -->
+              <RoleResp><xsl:value-of select="gmd:role/gmd:CI_RoleCode/@codeListValue"/></RoleResp>
+
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <IndividualNameResp></IndividualNameResp>
+            <OrganisationNameResp></OrganisationNameResp>
+            <PositionNameResp></PositionNameResp>
+            <RoleResp></RoleResp>
+          </xsl:otherwise>
+        </xsl:choose>
+
+
+        <!-- Maintenance and update frequency -->
+        <MaintenanceUpdateFrequency><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue"/></MaintenanceUpdateFrequency>
+
+        <!-- Keywords -->
+        <xsl:choose>
+          <xsl:when test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword">
+            <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword">
+              <DescriptiveKeyword><xsl:value-of select="gco:CharacterString" /></DescriptiveKeyword>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <DescriptiveKeyword></DescriptiveKeyword>
+          </xsl:otherwise>
+        </xsl:choose>
+
+        <!-- Use limitation -->
+        <xsl:choose>
+          <xsl:when test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation">
+            <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:resourceConstraints/gmd:MD_Constraints/gmd:useLimitation">
+              <UseLimitation><xsl:value-of select="gco:CharacterString" /></UseLimitation>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <UseLimitation></UseLimitation>
+          </xsl:otherwise>
+        </xsl:choose>
+
+
+        <!-- Other constraints -->
+        <xsl:choose>
+          <xsl:when test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints">
+            <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints">
+              <OtherConstraints><xsl:value-of select="gco:CharacterString" /></OtherConstraints>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <OtherConstraints></OtherConstraints>
+          </xsl:otherwise>
+        </xsl:choose>
+
+
+        <!-- Temporal Extent  -->
+        <TemporalExtent><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:extent[1]/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition"/></TemporalExtent>
+
+        <!-- Supplemental Information -->
+        <SupplementalInformation><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification']/gmd:resourceMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue"/></SupplementalInformation>
+
+        <!-- DISTRIBUTION INFO - Format -->
+        <xsl:choose>
+          <xsl:when test="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name">
+            <xsl:for-each select="gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name">
+              <FormatDI><xsl:value-of select="gco:CharacterString"/></FormatDI>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <FormatDI></FormatDI>
+          </xsl:otherwise>
+        </xsl:choose>
+
+        <!-- DISTRIBUTION INFO - Transfer options -->
+        <xsl:choose>
+          <xsl:when test="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
+            <xsl:for-each select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:linkage/gmd:URL">
+              <TransferOptionsDI><xsl:value-of select="."/></TransferOptionsDI>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <TransferOptionsDI></TransferOptionsDI>
+          </xsl:otherwise>
+        </xsl:choose>
+
+
+        <!-- SPATIAL REPRESENTATION INFO - Geometric object type -->
       <xsl:choose>
-        <xsl:when
-            test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility'">
-
-          <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']">
-            <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
-            <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
-
+        <xsl:when test="gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode">
+          <xsl:for-each select="gmd:spatialRepresentationInfo/gmd:MD_VectorSpatialRepresentation/gmd:geometricObjects/gmd:MD_GeometricObjects/gmd:geometricObjectType/gmd:MD_GeometricObjectTypeCode">
+            <GeometricObjectTypeSRI><xsl:value-of select="@codeListValue"/></GeometricObjectTypeSRI>
           </xsl:for-each>
         </xsl:when>
-
-        <xsl:when
-            test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility'">
-
-          <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']">
-            <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
-            <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
-          </xsl:for-each>
-        </xsl:when>
-
         <xsl:otherwise>
-          <MIM_ResponsibleOrganisation></MIM_ResponsibleOrganisation>
-          <MIM_ResponsiblePerson></MIM_ResponsiblePerson>
+          <GeometricObjectTypeSRI></GeometricObjectTypeSRI>
         </xsl:otherwise>
       </xsl:choose>
 
-      <xsl:choose>
-        <xsl:when test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']">
-          <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']">
-            <ReportingRecipientOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></ReportingRecipientOrganisation>
-          </xsl:for-each>
-        </xsl:when>
-        <xsl:otherwise>
-          <ReportingRecipientOrganisation></ReportingRecipientOrganisation>
-        </xsl:otherwise>
-      </xsl:choose>
+        <!-- DATA QUALITY INFO - Hierarchy Level -->
+        <HierarchyLevelDQI><xsl:value-of select="gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:scope/gmd:DQ_Scope/gmd:level/gmd:MD_ScopeCode/@codeListValue"/></HierarchyLevelDQI>
 
-      <MetadataMaintenanceNote><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString" /></MetadataMaintenanceNote>
+        <!-- METADATA - Maintenance and update frequency -->
+        <MaintenanceUpdateFrequencyMetadata><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceAndUpdateFrequency/gmd:MD_MaintenanceFrequencyCode/@codeListValue"/></MaintenanceUpdateFrequencyMetadata>
 
-      <DeadlineNextReporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate/gco:Date" /></DeadlineNextReporting>
+        <!-- METADATA - Maintenance note -->
+        <xsl:choose>
+          <xsl:when test="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote">
+            <xsl:for-each select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote">
+              <MaintenanceNoteMetadata><xsl:value-of select="gco:CharacterString"/></MaintenanceNoteMetadata>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <MaintenanceNoteMetadata></MaintenanceNoteMetadata>
+          </xsl:otherwise>
+        </xsl:choose>
 
-      <DateLastSummitedReport><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue = 'publication']/gmd:date/gco:Date" /></DateLastSummitedReport>
+        <xsl:choose>
+          <xsl:when test="gmd:contact/gmd:CI_ResponsibleParty">
+            <xsl:for-each select="gmd:contact/gmd:CI_ResponsibleParty">
+              <!-- METADATA - Individual name -->
+              <IndividualNameMetadata><xsl:value-of select="gmd:individualName/gco:CharacterString"/></IndividualNameMetadata>
 
+              <!-- METADATA - Organisation name -->
+              <OrganisationNameMetadata><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></OrganisationNameMetadata>
+
+              <!-- METADATA - Role -->
+              <RoleMetadata><xsl:value-of select="gmd:role/gmd:CI_RoleCode/@codeListValue"/></RoleMetadata>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <IndividualNameMetadata></IndividualNameMetadata>
+            <OrganisationNameMetadata></OrganisationNameMetadata>
+            <RoleMetadata></RoleMetadata>
+          </xsl:otherwise>
+        </xsl:choose>
+
+        <!-- METADATA - Date -->
+        <DateMetadata><xsl:value-of select="gmd:dateStamp/gco:DateTime"/></DateMetadata>
     </metadata>
   </xsl:template>
 
-  <xsl:template match="gmd:MD_Metadata" mode="pdf">
+    <xsl:template match="gmd:MD_Metadata" mode="csv-iro">
+        <xsl:param name="internalSep"/>
+
+        <metadata>
+            <xsl:copy-of select="geonet:info"/>
+
+            <!-- Title -->
+            <Title><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:alternateTitle/gco:CharacterString|gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"/></Title>
+            <xsl:choose>
+                <xsl:when
+                    test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility'">
+
+                    <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'primaryResponsibility']">
+                        <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
+                        <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
+
+                    </xsl:for-each>
+                </xsl:when>
+
+                <xsl:when
+                    test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility'">
+
+                    <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'partlyResponsibility']">
+                        <MIM_ResponsibleOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></MIM_ResponsibleOrganisation>
+                        <MIM_ResponsiblePerson><xsl:value-of select="gmd:individualName/gco:CharacterString"/></MIM_ResponsiblePerson>
+                    </xsl:for-each>
+                </xsl:when>
+
+                <xsl:otherwise>
+                    <MIM_ResponsibleOrganisation></MIM_ResponsibleOrganisation>
+                    <MIM_ResponsiblePerson></MIM_ResponsiblePerson>
+                </xsl:otherwise>
+            </xsl:choose>
+
+            <xsl:choose>
+                <xsl:when test="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']">
+                    <xsl:for-each select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:pointOfContact/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode/@codeListValue = 'reportingRecipient']">
+                        <ReportingRecipientOrganisation><xsl:value-of select="gmd:organisationName/gco:CharacterString"/></ReportingRecipientOrganisation>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ReportingRecipientOrganisation></ReportingRecipientOrganisation>
+                </xsl:otherwise>
+            </xsl:choose>
+
+            <MetadataMaintenanceNote><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:maintenanceNote/gco:CharacterString" /></MetadataMaintenanceNote>
+
+            <DeadlineNextReporting><xsl:value-of select="gmd:metadataMaintenance/gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate/gco:Date" /></DeadlineNextReporting>
+
+            <DateLastSummitedReport><xsl:value-of select="gmd:identificationInfo/*[name() = 'gmd:MD_DataIdentification' or name() = 'srv:SV_ServiceIdentification']/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[gmd:dateType/gmd:CI_DateTypeCode/@codeListValue = 'publication']/gmd:date/gco:Date" /></DateLastSummitedReport>
+
+        </metadata>
+    </xsl:template>
+
+    <xsl:template match="gmd:MD_Metadata" mode="pdf">
     <xsl:param name="internalSep"/>
     <xsl:message>mode=pdf</xsl:message>
     <!--<xsl:apply-templates mode="csv">
